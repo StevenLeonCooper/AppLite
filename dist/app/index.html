@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"><head><title>App Testing Page</title><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="index.8f305de0.css"><style></style></head><body id="PageBody"> <div id="AppWrapper"> <h1>TableGen - WCAG Table Creation Tool</h1> <p>Use this app to create WCAG/Section 508 Compliant HTML Tables</p> <section id="TableHeadSettings"> <h2>Table Head</h2> <p> <label for="TableCaptionControl">Caption:</label> <input type="text" id="TableCaptionControl" maxlength="200" data-keyup="syncCaption" value="Table Caption"> </p> <p> <label for="TableDefaultValueControl">Default Cell Value:</label> <input type="text" id="TableDefaultValueControl" maxlength="200" data-keyup="syncDefaultValue" value="New Value"> </p> <hr> </section> <section id="TableBodySettings"> <h2>Output Table</h2> <button type="button" id="InsertRowButton" data-click="addRow">Add Row at End</button> <button type="button" id="InsertColumnButton" data-click="addColumn">Add Column at End</button> <button type="button" id="GetHtmlButton" data-click="getHtmlCode">Get HTML Code</button> <button type="button" id="GetHtmlButton" data-click="previewTable">Preview Table</button> <button type="button" id="GetHtmlButton" data-click="textInput" data-action="importHtml">Import Table</button> <hr> <div id="MainTable"> <table id="UI_TABLE"> <caption>&nbsp;</caption> <thead> </thead> <tbody> </tbody> </table> </div> <hr> </section> </div> <script type="template" id="RowTemplate" class="row" data-template-for="MainTable">
+        <tr>
+            {{{rowContent}}}
+        </tr>
+        <tr class="ui-add-row">
+            <td colspan="{{columns}}" class="button-wrapper">
+                <button title="Add Row at {{row}}" data-row="{{row}}" class="add-row" data-click="addRow">Insert Row After {{nextRow}}</button>
+            </td>
+        </tr>
+    </script> <script type="template" id="ThTemplate" class="th" data-template-for="MainTable">
+        {{#first}}
+            <th class="button-wrapper">
+                <button title="Reset Table (All data will be lost.)" class="reset-table" data-click="resetTable">!R!</button>
+            </th>
+        {{/first}}
+        <th data-index="{{column}}">
+            <button title="Delete Column {{column}}" data-column="{{column}}" class="delete-column" data-click="removeColumn">-</button>
+            <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
+            <button title="Add Column After Column {{column}}" data-column="{{column}}" class="add-column" data-click="addColumn">+</button>
+        </th>
+    </script> <script type="template" id="TdTemplate" class="td" data-template-for="MainTable">
+        {{#first}}
+        <td rowspan="2" class="button-wrapper delete-row">
+            <button title="Delete Row at {{row}}" data-row="{{row}}" class="delete-row" data-click="removeRow">--</button>
+        </td>    
+        {{/first}}
+        <td data-index="{{column}}" class="{{#first}}first{{/first}}">           
+            <input data-location="{{row}},{{column}}" data-change="sync{{type}}" type="text" size="10" value="{{value}}">
+        </td>
+    </script> <script></script> <script type="module" src="index.33e82fd0.js"></script> </body></html>

@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+      "module": "es6",
+      "target": "es5"
+    },
+    "include": [
+        "libs/mustache.js",
+        "helper_ajax.js",
+        "helper_ui.js",
+        "helper_events.js",
+        "app.js"
+    ]
+  }
