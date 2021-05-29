@@ -1,6 +1,5 @@
 import mustache from "./libs/mustache.js";
 
-
 export class Modal {
     constructor(content) {
 
@@ -64,10 +63,11 @@ export class Modal {
     }
 
     confirm(ifYes, ifNo) {
-        let template = `<h1>Confirm</h1><hr>
+        let template = 
+        `<h1>Confirm</h1><hr>
         <div id="Confirm">${this.content}<hr>
-        <button data-mclick="confirmYes">Yes</button>
-        <button data-mclick="confirmNo">No</button>
+            <button data-mclick="confirmYes">Yes</button>
+            <button data-mclick="confirmNo">No</button>
         </div>`;
 
         this.content = template;
@@ -87,10 +87,10 @@ export class Modal {
 
     textInput(callback) {
         
-        let template = `<h2>Input Text</h2>
-                        <textarea id="TextInput" class="modal-input">Copy/Paste Here</textarea>
-                        <hr>
-                        <button data-mclick="processTextInput">Continue</button>`;
+        let template = 
+        `<h2>Input Text</h2>
+        <textarea id="TextInput" class="modal-input">Copy/Paste Here</textarea><hr>
+        <button data-mclick="processTextInput">Continue</button>`;
 
         this.content = template;
 

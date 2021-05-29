@@ -1,5 +1,6 @@
 import { events } from './helper_events.js';
 
+import {Request, GET, POST} from './helper_ajax.js';
 
 /**
  * Here we add event listeners and setup the app. 
@@ -26,6 +27,15 @@ document.body.addEventListener("click", (e) => {
 });
 
 document.body.onload = () => {
+
+    let req = new GET("JSON");
+    req
+    .from("api/test.json")
+    .then((data)=>{
+
+        console.log(data);
+
+    }).now();
 
 
 };

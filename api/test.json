@@ -1,0 +1,24 @@
+{
+    "people" : [
+        {
+            "name": "Bob",
+            "occupation":"Firefighter"
+        },
+        {
+            "name": "Jan",
+            "occupation":"Doctor"
+        },
+        {
+            "name": "Juan",
+            "occupation":"Mayor"
+        }
+    ],
+    "places": [
+        "California",
+        "Texas",
+        "New York",
+        "Alaska"
+    ],
+    "isCool" : true,
+    "someText": "Here's some text."
+}
