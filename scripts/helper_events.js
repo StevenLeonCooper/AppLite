@@ -1,10 +1,29 @@
-import { UI } from "./helper_ui.js";
+import { Modal } from "./class_modal.js";
 
 export const events = {
     click: {},
     change: {},
     keyup: {},
     actions: {}
+};
+
+events.click.hello = () => {
+
+    let message = new Modal("<strong>HELLO</strong>");
+
+    message.confirm(() => {
+        
+        let yes = new Modal("YOU SAID YES!");
+        yes.alert();
+
+    }, () => {
+
+        let no = new Modal("YOU SAID NO!!");
+
+        no.warn();
+
+    });
+
 };
 
 const triggerEvent = (name, data, element) => {
@@ -18,14 +37,14 @@ const triggerEvent = (name, data, element) => {
 
 const triggerEventAll = (name, data, selector) => {
 
-   try{
-    let elements = document.querySelectorAll(selector);
+    try {
+        let elements = document.querySelectorAll(selector);
 
-    elements.forEach((item) => {
-        triggerEvent(name, data, item);
-    });
+        elements.forEach((item) => {
+            triggerEvent(name, data, item);
+        });
 
-   }catch(er){
-       UI.warning(er.message ?? "Unknown Error");
-   }
+    } catch (er) {
+        let message = new Modal("Error!").show();
+    }
 };
