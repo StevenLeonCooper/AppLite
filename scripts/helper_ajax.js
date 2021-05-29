@@ -50,17 +50,17 @@ export class Request {
         return this;
     }
 
-    _processReturn(data){
-        if(this.returnType == "JSON"){
+    _processReturn(data) {
+        if (this.returnType == "JSON") {
             return JSON.parse(data);
         }
 
-        if(this.returnType == "HTML"){
+        if (this.returnType == "HTML") {
             return data;
         }
     }
 
-    now() {
+    _prepHeaders() {
         if (this.requestType === "POST") {
             this.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         }
@@ -68,12 +68,16 @@ export class Request {
             var str = Object.keys(this.data).map(key => `${key}=${this.data[key]}`).join("&");
             this.url = `${this.url}?${str}`;
         }
+    }
+
+    now() {
+        this._prepHeaders();
 
         const promise = new Promise((resolve, reject) => {
             const Request = this;
-            
+
             Request.xhr.open(Request.requestType, Request.url, true);
-            
+
             Request.xhr.onload = function () {
                 if (this.status >= 200 && this.status < 400) {
                     var data = Request._processReturn(this.response);
@@ -81,21 +85,16 @@ export class Request {
                 }
                 reject("Moderate Error");
             };
-
             Request.xhr.onerror = function () {
                 reject("Serious Error");
             };
             // INITIATE AJAX REQUEST
             Request.xhr.send(Request.data);
         })
-            .then((data) => {
-                this.thenHandler(data);
-            })
-            .catch((error) => {
-                this.catchHandler(error);
-            });
+            .then(this.thenHandler)
+            .catch(this.catchHandler);
 
-    return this;
+        return this;
     }
 }
 
@@ -111,12 +110,12 @@ export class POST extends Request {
     }
 }
 
-export const getJSON = (url, callback) =>{
+export const getJSON = (url, callback) => {
     let request = new GET("JSON").from(url).then(callback);
     request.now();
 }
 
-export const postData = (url, data, callback)=>{
+export const postData = (url, data, callback) => {
     let request = new POST(data).to(url).then(callback);
     request.now();
 };
