@@ -111,4 +111,14 @@ export class POST extends Request {
     }
 }
 
+export const getJSON = (url, callback) =>{
+    let request = new GET("JSON").from(url).then(callback);
+    request.now();
+}
+
+export const postData = (url, data, callback)=>{
+    let request = new POST(data).to(url).then(callback);
+    request.now();
+};
+
 
