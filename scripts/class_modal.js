@@ -76,55 +76,88 @@ export class Modal {
 
         return false;
     }
-    
+
     /**
      * - This implementation creates a confirm/decline dialogue and invokes callbacks for each. 
      * @param {function} ifYes 
      * @param {function} ifNo 
      */
-    confirm(ifYes, ifNo) {
-        let template = `<h1>Confirm</h1><hr>
-                        <div id="Confirm">${this.content}<hr>
-                            <button data-mclick="confirmYes">Yes</button>
-                            <button data-mclick="confirmNo">No</button>
-                        </div>`;
+    async confirm() {
 
-        this.content = template;
+        const self = this;
 
-        this.callbacks.confirmYes = () => {
-            this.close();
-            ifYes?.();
-        };
+        return new Promise((resolve, reject) => {
 
-        this.callbacks.confirmNo = () => {
-            this.close();
-            ifNo?.();
-        };
+            try {
+                let template = `<h1>Confirm</h1><hr>
+                                <div id="Confirm">${this.content}<hr>
+                                    <button data-mclick="confirmYes">Yes</button>
+                                    <button data-mclick="confirmNo">No</button>
+                                </div>`;
 
-        this.show();
+                self.content = template;
+
+                self.callbacks.confirmYes = () => {
+                    try {
+                        self.close();
+                        resolve(true);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+
+                self.callbacks.confirmNo = () => {
+                    try {
+                        self.close();
+                        resolve(false);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+
+                self.show();
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
 
     /**
      * This implementation provides text input for the user and then sends it to the provided callback for use. 
      */
-    textInput(callback) {
-        
-        let template = 
-        `<h2>Input Text</h2>
-        <textarea id="TextInput" class="modal-input">Copy/Paste Here</textarea><hr>
-        <button data-mclick="processTextInput">Continue</button>`;
+    async textInput() {
 
-        this.content = template;
+        const self = this;
 
-        this.callbacks.processTextInput = (e) => {
+        return new Promise((resolve, reject) => {
+            try {
+                let template = `<h2>Input Text</h2>
+                                <textarea id="TextInput" class="modal-input">Write Text Here</textarea><hr>
+                                <button data-mclick="processTextInput">Continue</button>`;
 
-            let text = document.getElementById("TextInput").value;
+                self.content = template;
 
-            this.close();
+                self.callbacks.processTextInput = (e) => {
 
-            callback.call(e.target, text);
-        };
+                    try {
+                        let text = document.getElementById("TextInput").value;
 
-        this.show();
+                        self.close();
+
+                        resolve(text);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+
+                this.show();
+
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+
+
     }
 }

@@ -8,6 +8,8 @@ import { Modal } from './class_Modal.js';
 
 import { Benchmark } from './class_Benchmark.js';
 
+import { ui } from './helper_ui.js';
+
 
 /**
  * Here we add event listeners and setup the app. 
@@ -60,6 +62,18 @@ document.body.onload = () => {
             console.log(error);
         });
 
+    // (async () => {
+
+    //     try {
+    //         let result = await getJsonPromise("api/test.json");
+    //         let alert = new Modal(result);
+    //         alert.alert();
+    //     } catch (error) {
+    //         let warning = new Modal(error);
+    //         warning.warn();
+    //     }
+    // })();
+
     // Let's use an async function to get some HTML data
     // Then let's pop it up on a modal window. 
     async function sayHello() {
@@ -93,16 +107,20 @@ document.body.onload = () => {
     events.click.hello = sayHello;
 
     // For fun, let's do an async operation and then calculate how long it took: 
-    async function doStuff(url){
+    async function doStuff(url) {
         let result = await getJsonPromise(`api/test.json?_=${Math.random()}`);
         console.log(result);
     }
 
     // Start the timer
     let test = new Benchmark("Doing Stuff");
-    doStuff().then(()=>{
+    doStuff().then(() => {
         test.stop(); //Aaaaand TIME!
         console.log(test.detailedResults)
+    });
+
+    ui.textInput("Say Something").then((result)=>{
+        document.body.innerHTML = result;
     });
 
 };
