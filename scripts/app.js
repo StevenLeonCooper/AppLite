@@ -45,12 +45,12 @@ document.body.onload = () => {
         target: "#TestArea"
     });
 
+    // importPackage returns a promise so we can use the standard then/catch syntax if we want.
     foo.importPackage().catch((error) => {
         console.log(error);
     });
 
     // Let's get some data asynchronously and log it
-
     getJsonPromise("api/test.json")
         .then((result) => {
             console.log(`We got this text: ${result.someText}`);

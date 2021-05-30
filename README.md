@@ -28,7 +28,7 @@ These are things you'll instantiate over and over and utilize a lot.
 
 **Helpers** - The helper modules do not use the JS class syntax. These represent objects and functions that only really need
 to be instantiated once and don't require a class/factory pattern. These objects and functions are intended to simplify access 
-to fields and methods on classes that might be a little verbose or inconvenient otherwise. If you want to obsess over performance, bundle and minify this app for production. The code is verbose and description intentionally to help newer developers understand what's happening in the code. 
+to fields and methods on classes that might be a little verbose or inconvenient otherwise. If you want to obsess over performance, bundle and minify this app for production. The code is verbose and descriptive intentionally to help newer developers understand what's happening in the code. 
 
 **Custom** - The custom prefix denotes a helper that is unique to an individual's implementation of the app. While you might use
 all the other classes and helpers without modifying any of the code, you'll almost definitely modify __custom_events.js__ since

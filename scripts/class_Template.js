@@ -1,7 +1,10 @@
-import { getJsonPromise, getHTML, getJSON, getHtmlPromise } from './helper_ajax.js';
+import { getJsonPromise, getHtmlPromise } from './helper_ajax.js';
 
 import Mustache from './libs/mustache.js';
 
+/**
+ * - A class representing a template for rendering content onto the page. 
+ */
 export class Template {
     constructor(settings) {
 
@@ -39,6 +42,12 @@ export class Template {
         Object.assign(this.context, items);
     }
 
+    /**
+     * - Gets HTML from a URL and sets the html field. 
+     * @param {string} url 
+     * @param {boolean} noRender - flag to prevent unnecessary rendering
+     * @returns a promise object with the result. 
+     */
     async importPartial(url, noRender) {
 
         const self = this;
@@ -56,6 +65,12 @@ export class Template {
         }
     }
 
+    /**
+     * - Gets JSON from a URL and sets the context field. 
+     * @param {string} url 
+     * @param {boolean} noRender 
+     * @returns A promise object with the result.
+     */
     async importContext(url, noRender) {
 
         const self = this;
@@ -73,6 +88,12 @@ export class Template {
         }
     }
 
+    /**
+     * - Gets JSON/HTML from a URL and sets the context & html fields. 
+     * @param {string} dataUrl - URL of JSON string
+     * @param {*} templateUrl - URL of HTML text
+     * @returns a promise object with a reference to the template. 
+     */
     async importPackage(dataUrl, templateUrl) {
 
         let self = this;
@@ -89,6 +110,12 @@ export class Template {
         return self;
     }
 
+    /**
+     * - Gets HTML from a template already on the page. Can render if the
+     * target is already set. 
+     * @param {string} selector 
+     * @returns a reference to the template instance for chaining. 
+     */
     load(selector) {
         let template = document.querySelector(selector);
 
@@ -103,6 +130,12 @@ export class Template {
         return this;
     }
 
+    /**
+     * - Renders the current template to the innerHTML of the element
+     * matching the provided selector. 
+     * @param {string} selector 
+     * @returns a reference to the tamplet instance for chaining. 
+     */
     render(selector) {
 
         let target = document.querySelector(selector);
