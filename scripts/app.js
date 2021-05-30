@@ -2,8 +2,8 @@ import { events } from './helper_events.js';
 
 import { getJSON, postData } from './helper_ajax.js';
 
-import { Template } from './helper_templates.js';
-import mustache from './libs/mustache.js';
+import { Template } from './class_Template.js';
+
 
 /**
  * Here we add event listeners and setup the app. 
@@ -39,24 +39,23 @@ document.body.onload = () => {
 
     // }).now();
 
-    getJSON("api/test.json", function (data) {
+    let settings = {
+        context: {},
+        engine: "mustache",
+        autoRender: true,
+        target: "#TestArea2"
+    }
 
-        let settings = {
-            context: data,
-            engine: "mustache"
-        }
+    let test = new Template(settings);
 
-        let test = new Template(settings);
-        
-        test.import("api/partial.html")
-            .then(() => {
-                test.render("#TestArea");
-            });
+    test.importPackage("api/test.json", "api/partial.html"); //ASYNC
 
+    let foo = new Template({
+        context: {value: "BAR"},
+        autoRender: false
     });
 
-
-
+    foo.load("#TestTemplate").render("#TestArea");
 
 };
 

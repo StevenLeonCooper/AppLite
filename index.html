@@ -19,10 +19,13 @@
         <div id="TestArea">
 
         </div>
+        <div id="TestArea2">
+
+        </div>
         <button data-click="hello">Say Hi</button>
     </div>
 
-    <template data-template-for="TestArea2">
+    <template id="TestTemplate" data-template-for="TestArea2" data-engine="mustache">
         <h2>{{value}}</h2>
     </template>
     <script type="module" src="scripts/app.js"></script>
