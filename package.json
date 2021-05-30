@@ -3,12 +3,10 @@
   "version": "1.0.0",
   "description": "WCAG Compliant Table Generation",
   "scripts": {
-    "build": "parcel build --no-content-hash ./index.html --public-url ./ --dist-dir ./dist --target app"
+    "build": "parcel build --no-content-hash ./index.html --public-url ./"
   },
-  "app": "dist/app/index.html",
-  "targets": {
-    "app": {}
-  },
+  "main": "dist/app/index.html",
+
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -17,6 +15,6 @@
   },
   "dependencies": {},
   "browserslist": [
-    "defaults"
+    "Edge 17"
   ]
 }
