@@ -117,3 +117,5 @@ export class Modal {
 //          return rendered;          
 //     };
 // },
+
+// let p = ()=>{ return (object, render)=>{}};
