@@ -81,6 +81,7 @@ export class Modal {
      * - This implementation creates a confirm/decline dialogue and invokes callbacks for each. 
      * @param {function} ifYes 
      * @param {function} ifNo 
+     * @returns - a promise object
      */
     async confirm() {
 
@@ -124,6 +125,7 @@ export class Modal {
 
     /**
      * This implementation provides text input for the user and then sends it to the provided callback for use. 
+     * @returns - a promise object
      */
     async textInput() {
 

@@ -2,6 +2,11 @@ import { Modal } from './class_Modal.js';
 
 export const ui = {};
 
+ui.message(content){
+    let modal = new Modal(content);
+    modal.show();
+}
+
 ui.alert = (content) => {
     let modal = new Modal(content);
     modal.alert();
