@@ -6,7 +6,7 @@
     "include": [
         "libs/mustache.js",
         "helper_ajax.js",
-        "class_modal.js",
+        "class_Modal.js",
         "helper_events.js",
         "app.js"
     ]

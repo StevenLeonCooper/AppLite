@@ -1,4 +1,4 @@
-import { Modal } from "./class_modal.js";
+import { Modal } from "./class_Modal.js";
 
 export const events = {
     click: {},

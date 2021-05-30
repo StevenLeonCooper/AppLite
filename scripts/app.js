@@ -1,6 +1,8 @@
 import { events } from './helper_events.js';
 
-import {Request, GET, POST, getJSON, postData} from './helper_ajax.js';
+import { getJSON, postData } from './helper_ajax.js';
+
+import { Template } from './helper_templates.js';
 
 /**
  * Here we add event listeners and setup the app. 
@@ -36,11 +38,20 @@ document.body.onload = () => {
 
     // }).now();
 
-    getJSON("api/test.json", function(data){
+    getJSON("api/test.json", function (data) {
 
-        console.log(data);
+        let test = new Template();
+
+        test.import("api/partial.html").then((self) => {
+    
+            test.render("#TestArea");
+    
+            
+        });
 
     });
+
+
 
 
 };
