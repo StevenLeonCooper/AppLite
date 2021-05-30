@@ -1,4 +1,4 @@
-import { getHTML, getJSON } from './helper_ajax.js';
+import { getJsonPromise, getHTML, getJSON, getHtmlPromise } from './helper_ajax.js';
 
 import Mustache from './libs/mustache.js';
 
@@ -14,6 +14,8 @@ export class Template {
         this.engine = this.engine ?? "default";
         this.target = this.target ?? "#NoTargetSelected";
         this.rendered = this.rendered ?? "";
+        this.dataUrl = this.dataUrl ?? null;
+        this.htmlUrl = this.htmlUrl ?? null;
         this.autoRender = this.autoRender || false;
 
         this.engines = {
@@ -37,48 +39,50 @@ export class Template {
         Object.assign(this.context, items);
     }
 
-    async importPartial(url) {
+    async importPartial(url, noRender) {
 
         const self = this;
 
-        return new Promise((resolve, reject) => {
+        url = url ?? self.htmlUrl;
 
-            getHTML(url, (result) => {
-                self.html = result;
-                if (self.autoRender) self.render(self.target);
-                resolve(self);
-            });
-        });
+        try {
+            let result = await getHtmlPromise(url);
+            self.html = result;
+            if (self.autoRender && noRender != true) self.render(self.target);
+            return result;
+        }
+        catch (error) {
+            return error;
+        }
     }
 
-    async importContext(url) {
+    async importContext(url, noRender) {
 
         const self = this;
 
-        return new Promise((resolve, reject) => {
-            getJSON(url, (result) => {
-                self.context = result;
-                if (self.autoRender) self.render(self.target);
-                resolve(self);
-            },
-                (error) => {
-                    reject(error);
-                });
-        });
+        url = url ?? self.dataUrl;
+
+        try {
+            let result = await getJsonPromise(url);
+            self.context = result;
+            if (self.autoRender && noRender != true) self.render(self.target);
+            return result;
+        }
+        catch (error) {
+            return error;
+        }
     }
 
     async importPackage(dataUrl, templateUrl) {
+
         let self = this;
 
-        let autoRenderCache = self.autoRender;
+        dataUrl = dataUrl ?? self.dataUrl;
+        templateUrl = templateUrl ?? self.templateUrl;
 
-        self.autoRender = false;
+        await this.importPartial(templateUrl, true);
 
-        let t = await this.importPartial(templateUrl);
-
-        let d = await this.importContext(dataUrl);
-
-        self.autoRender = autoRenderCache;
+        await this.importContext(dataUrl, true);
 
         if (self.autoRender) self.render(self.target);
 
@@ -91,15 +95,16 @@ export class Template {
         let engine = template.dataset.engine ?? "default";
 
         this.html = template.innerHTML ?? "<em>No Template Found</em>";
-        
+
         this.engine = engine;
 
-        if(this.autoRender) this.render(this.target);
+        if (this.autoRender) this.render(this.target);
 
         return this;
     }
 
     render(selector) {
+
         let target = document.querySelector(selector);
 
         let rendered = this.engines[this.engine]?.();

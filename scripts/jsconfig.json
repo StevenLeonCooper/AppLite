@@ -7,7 +7,10 @@
         "libs/mustache.js",
         "helper_ajax.js",
         "class_Modal.js",
-        "helper_events.js",
+        "class_Request.js",
+        "class_Template.js",
+        "class_Benchmark.js",
+        "custom_events.js",
         "app.js"
     ]
   }
