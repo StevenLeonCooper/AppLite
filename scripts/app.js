@@ -5,6 +5,7 @@ import { getHtmlPromise, getJsonPromise } from './helper_ajax.js';
 import { Template } from './class_Template.js';
 
 import { Modal } from './class_Modal.js';
+
 import { Benchmark } from './class_Benchmark.js';
 
 
@@ -96,7 +97,7 @@ document.body.onload = () => {
         let result = await getJsonPromise(`api/test.json?_=${Math.random()}`);
         console.log(result);
     }
-    
+
     // Start the timer
     let test = new Benchmark("Doing Stuff");
     doStuff().then(()=>{
