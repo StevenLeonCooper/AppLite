@@ -52,6 +52,7 @@ export class Template {
     }
 
     async importContext(url) {
+
         const self = this;
 
         return new Promise((resolve, reject) => {
@@ -61,7 +62,6 @@ export class Template {
                 resolve(self);
             },
                 (error) => {
-                    debugger;
                     reject(error);
                 });
         });

@@ -15,4 +15,10 @@ export const postData = (url, data, callback) => {
     request.now();
 };
 
+export const getAsync = (url) =>{
+    let request = new GET("JSON").from(url);
+
+    return request.send();
+};
+
 

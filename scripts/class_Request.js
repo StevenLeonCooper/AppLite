@@ -70,6 +70,31 @@ export class Request {
         }
     }
 
+    async send() {
+        this._prepHeaders();
+
+        return new Promise((resolve, reject) => {
+            
+            const Request = this;
+
+            Request.xhr.open(Request.requestType, Request.url, true);
+
+            Request.xhr.onload = function () {
+                if (this.status >= 200 && this.status < 400) {
+                    var data = Request._processReturn(this.response);
+                    resolve(data);
+                }
+                reject("Moderate Error");
+            };
+            Request.xhr.onerror = function () {
+                reject("Serious Error");
+            };
+            // INITIATE AJAX REQUEST
+            Request.xhr.send(Request.data);
+
+        });
+    }
+
     now() {
         this._prepHeaders();
 

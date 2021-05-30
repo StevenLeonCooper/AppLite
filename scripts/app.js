@@ -1,6 +1,6 @@
 import { events } from './helper_events.js';
 
-import { getJSON, postData } from './helper_ajax.js';
+import { getJSON, postData, getAsync } from './helper_ajax.js';
 
 import { Template } from './class_Template.js';
 
@@ -51,11 +51,23 @@ document.body.onload = () => {
     test.importPackage("api/test.json", "api/partial.html"); //ASYNC
 
     let foo = new Template({
-        context: {value: "BAR"},
+        context: { value: "BAR" },
         autoRender: false
     });
 
     foo.load("#TestTemplate").render("#TestArea");
+
+
+    const asyncData = getAsync("api/test.json")
+        .then((result) => {
+
+            console.log(`Text: ${result.someText}`);
+
+        }).catch((e) => {
+
+            console.log(e ?? "Uh Oh!");
+        });
+
 
 };
 
