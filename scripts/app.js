@@ -5,6 +5,7 @@ import { getHtmlPromise, getJsonPromise } from './helper_ajax.js';
 import { Template } from './class_Template.js';
 
 import { Modal } from './class_Modal.js';
+import { Benchmark } from './class_Benchmark.js';
 
 
 /**
@@ -89,6 +90,19 @@ document.body.onload = () => {
     // Let's stick this in the click events so it only happens when you click a button. 
     // Normally I wouldn't set events here, just define them in custom_events.js
     events.click.hello = sayHello;
+
+    // For fun, let's do an async operation and then calculate how long it took: 
+    async function doStuff(url){
+        let result = await getJsonPromise(`api/test.json?_=${Math.random()}`);
+        console.log(result);
+    }
+    
+    // Start the timer
+    let test = new Benchmark("Doing Stuff");
+    doStuff().then(()=>{
+        test.stop(); //Aaaaand TIME!
+        console.log(test.detailedResults)
+    });
 
 };
 
