@@ -40,7 +40,8 @@ document.body.onload = () => {
 
     getJSON("api/test.json", function (data) {
 
-        let test = new Template();
+        let test = new Template("mustache");
+        test.context = data;
 
         test.import("api/partial.html").then((self) => {
     

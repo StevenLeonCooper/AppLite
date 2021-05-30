@@ -3,10 +3,10 @@ import { getHTML, getJSON } from './helper_ajax.js';
 import Mustache from './libs/mustache.js';
 
 export class Template {
-    constructor() {
+    constructor(engine) {
         this.context = {};
         this.html = "";
-        this.engine = "default";
+        this.engine = engine ?? "default";
         this.target = "";
         this.rendered = "";
         this.engines = {
