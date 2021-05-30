@@ -4,6 +4,8 @@ import { getHtmlPromise, getJsonPromise } from './helper_ajax.js';
 
 import { Template } from './class_Template.js';
 
+import { Modal } from './class_Modal.js';
+
 
 /**
  * Here we add event listeners and setup the app. 
@@ -31,6 +33,10 @@ document.body.addEventListener("click", (e) => {
 
 document.body.onload = () => {
 
+    // Example: Setup a template where the data AND template need to be downladed. 
+    // In this example, are only do 1 function call and everything else is in the settings. 
+    // You could leave the settings blank & setup everything with functions as well. 
+
     let foo = new Template({
         engine: "mustache",
         autoRender: true,
@@ -39,9 +45,50 @@ document.body.onload = () => {
         target: "#TestArea"
     });
 
-    foo.importPackage().catch((error)=>{
+    foo.importPackage().catch((error) => {
         console.log(error);
     });
+
+    // Let's get some data asynchronously and log it
+
+    getJsonPromise("api/test.json")
+        .then((result) => {
+            console.log(`We got this text: ${result.someText}`);
+        }).catch((error) => {
+            console.log(error);
+        });
+
+    // Let's use an async function to get some HTML data
+    // Then let's pop it up on a modal window. 
+    async function sayHello() {
+        try {
+            let url = "api/greeting.html";
+            let result = await getHtmlPromise(url);
+            let message = new Modal(result);
+            message.show();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    // This function is the SAME as the one above except it doesn't use
+    // the async/await syntax and it uses then/catch chaining instead. 
+    // Otherwise they're IDENTICAL. Just FYI. 
+    function sayHi() {
+        let url = "api/greeting.html";
+        getHtmlPromise(url)
+            .then((result) => {
+                let message = new Modal(result);
+                message.show();
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    // Let's stick this in the click events so it only happens when you click a button. 
+    // Normally I wouldn't set events here, just define them in custom_events.js
+    events.click.hello = sayHello;
 
 };
 

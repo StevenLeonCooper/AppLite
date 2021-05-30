@@ -7,25 +7,6 @@ export const events = {
     actions: {}
 };
 
-events.click.hello = () => {
-
-    let message = new Modal("<strong>HELLO</strong>");
-
-    message.confirm(() => {
-        
-        let yes = new Modal("YOU SAID YES!");
-        yes.alert();
-
-    }, () => {
-
-        let no = new Modal("YOU SAID NO!!");
-
-        no.warn();
-
-    });
-
-};
-
 const triggerEvent = (name, data, element) => {
     let eventData = { detail: data };
     let event = new CustomEvent(name, eventData);
