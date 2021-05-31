@@ -23,6 +23,26 @@
 
         </div>
         <button data-click="hello">Say Hi</button>
+
+        <hr>
+
+        <div data-bind="receive:template">
+            <template>
+                <h2>Places:</h2>
+                <ul>
+                    {{#places}}
+                    <li>{{.}}</li>
+                    {{/places}}
+                    </ul>
+            </template>
+        </div>
+        <div>
+            <label for="SomeTextInput">Enter Some Text</label>
+            <input type="text" id="SomeTextInput" data-bind="sync:value" data-context="someText">
+            <hr>
+            <p data-bind="receive:innerHTML" data-context="someText"></p>
+        </div>
+
     </div>
 
     <template id="TestTemplate" data-template-for="TestArea2" data-engine="mustache">

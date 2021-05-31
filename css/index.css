@@ -88,13 +88,22 @@ button {
 
 /* APP */
 
+#PageBody{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+}
+
 #AppWrapper {
     border: 1px solid var(--app-border);
     border-radius: 4px;
-    padding: 5px;
+    padding: 10px;
     box-shadow: inset 0 0 5px var(--app-inner-shadow);
-    background-color: var(--app-body);
+    background-color: var(--app-body);   
 }
+
+
 
 .input-wrapper label, .input-wrapper button, .input-wrapper input {
     display: block;

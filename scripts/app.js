@@ -8,6 +8,8 @@ import { Modal } from './class_Modal.js';
 
 import { Benchmark } from './class_Benchmark.js';
 
+import { bindings } from './helper_binding.js';
+
 import { ui } from './helper_ui.js';
 
 
@@ -119,9 +121,6 @@ document.body.onload = () => {
         console.log(test.detailedResults)
     });
 
-    ui.textInput("Say Something").then((result)=>{
-        document.body.innerHTML = result;
-    });
-
+    bindings.setup("api/test.json");
 };
 
