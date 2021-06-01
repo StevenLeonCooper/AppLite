@@ -80,6 +80,8 @@ bindings.setup = async (context) => {
 
     // Updating isn't necessary since the initial setup injects the values
 
+    window._bindings = bindings; // debug
+
 };
 
 bindings.update = (item) => {

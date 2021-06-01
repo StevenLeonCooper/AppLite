@@ -33,8 +33,8 @@ class Bindable {
     }
 
     unsubscribe(subscriber) {
-        this.subscribers = this.subscribers.filter(x => x == subscriber);
-        subscriber.subscriptions = subscriber.subscriptions.filter(x => x == this);
+        this.subscribers = this.subscribers.filter(x => x !== subscriber);
+        subscriber.subscriptions = subscriber.subscriptions.filter(x => x !== this);
     }
 }
 
