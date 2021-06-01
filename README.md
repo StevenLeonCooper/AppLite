@@ -37,18 +37,18 @@ those are the event handlers that make things happen on your page. The __app.js_
 # Current Features (Update 2021-06-01)
 
 * **AJAX/XHR Helper & Request Class** - This helper/class combo provides some convenient GET/POST functionality using promises. 
-* **Benchmark Class** - This is a very simple class for using performance.now() to test your script's execution time in ms.
-* **UI Helper with Modal Window** - Basic implementation of HTML-based alerts, warnings, text entry & confirm yes/no diaglogues. 
+* **Benchmark Class** - This is a very simple class for using __performance.now()__ to test your script's execution time in ms.
+* **UI Helper with Modal Window** - Basic implementation of HTML-based alerts, warnings, text entry & confirmation diaglogues. 
 * **Basic Template Rendering** - Load dynamic or static JSON and/or templates or partials & render them to the page using mustache.js. 
 * **Basic Event Delegation** - Add functions to custom_events.js based on trigger category & they're automatically "wired" via data attributes. 
-* **Basic 2-way Binding** - Extending the data context concept, setup Models and Views that are "Bound" to eachother & listen for/send updates. 
+* **Basic 2-way Binding** - Extending the data context concept, setup Models and Views that are "Bound" to each other & listen for/send updates. 
 
 All helpers and most classes are optional so you could slim down this build to suit your needs. Only templates and bindings rely on mustache.js so you can really slim down the build by excluding those. 
 
 # To-Do List:  
 
-* Advance the binding funtionality to allow for more complex view senders (e.g. convert <select> control into array, etc.)
+* Advance the binding funtionality to allow for more complex view senders (e.g. convert <\select> control into array, etc.)
 * Cleanup dependencies to make customization easier and more intuitive. 
-* Add more documentation to maximize readability. 
+* Add more documentation to maximize readability.
 * Add more thorough examples and demos. 
 
