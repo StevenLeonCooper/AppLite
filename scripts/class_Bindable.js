@@ -19,6 +19,12 @@ class Bindable {
         this.setData(data);
     }
 
+    requestUpdate() {
+        this.subscriptions.forEach((item) => {
+            this.receive(item.getData());
+        });
+    }
+
     getData() {
         // Implemented at the View/Model level
     }
