@@ -47,7 +47,7 @@ class View extends Bindable {
     constructor(element) {
         super();
         let bindInfo = element.dataset.bind?.split(":");
-
+        this.quiet = false; // prevents sends on an update
         this.element = element;
         this.action = bindInfo?.[0];
         this.target = bindInfo?.[1];
@@ -58,7 +58,7 @@ class View extends Bindable {
             element.addEventListener(element.dataset.bindOn, this.send.bind(this));
         }
     }
-    
+
     setData(data) {
         let method = `render_${this.target}`;
         this[method]?.(data);
@@ -94,12 +94,18 @@ class View extends Bindable {
         context = context[this.subContext] ?? context;
         this.element.value = context;
     }
+
+    send() {
+        if (this.quiet === true) return false;
+        super.send();
+    }
 }
 
 class Model extends Bindable {
     constructor(data) {
         super();
         this.data = data;
+        this.quiet = false; // prevents sends on an update
     }
 
     getData() {
@@ -109,6 +115,16 @@ class Model extends Bindable {
     setData(data) {
         this.data = { ...this.data, ...data }
         this.send();
+    }
+
+    replaceData(newData) {
+        this.data = newData;
+        this.send();
+    }
+
+    send() {
+        if (this.quiet === true) return false;
+        super.send();
     }
 }
 
@@ -147,16 +163,18 @@ const getModel = async (context) => {
     }
 };
 
-const subscribeReceivers = (receiverList, sender) => {
-    receiverList.forEach((item) => {
+const subscribeViews = (views, sender) => {
+    views.forEach((item) => {
         if (item.action === "receive") {
             sender.subscribe(item);
         }
+        // give views the initial data value.
+        item.receive(sender.getData());
     });
 }
 
-const subscribeRecipients = (sendeeList, sender) => {
-    sendeeList.forEach((item) => {
+const subscribeModels = (models, sender) => {
+    models.forEach((item) => {
         if (sender.action === "send") {
             sender.subscribe(item);
         }
@@ -174,16 +192,14 @@ bindings.setup = async (context) => {
     bindings.views = getViews(bindings.pageContext);
 
     bindings.models.forEach((model) => {
-        subscribeReceivers(bindings.views, model);
+        subscribeViews(bindings.views, model);
     });
 
     bindings.views.forEach((view) => {
-        subscribeRecipients(bindings.models, view);
+        subscribeModels(bindings.models, view);
     });
 
-    bindings.updateAll();
-
-    window._bindings = bindings;
+    // Updating isn't necessary since the initial setup injects the values
 
 };
 

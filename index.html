@@ -40,7 +40,7 @@
         </div>
         <div>
             <label for="SomeTextInput">Enter Some Text</label>
-            <input type="text" id="SomeTextInput" data-bind="send:value" data-context="someText" data-bind-on="change">
+            <input type="text" id="SomeTextInput" data-bind="send:value" data-context="someText" data-bind-on="keyup">
             <hr>
             <p data-bind="receive:innerHTML" data-context="someText"></p>
         </div>
