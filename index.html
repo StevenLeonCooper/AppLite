@@ -25,6 +25,8 @@
         <button data-click="hello">Say Hi</button>
 
         <hr>
+        <h2>Binding Tests</h2>
+        <hr>
 
         <div data-bind="receive:template">
             <template>
@@ -38,7 +40,7 @@
         </div>
         <div>
             <label for="SomeTextInput">Enter Some Text</label>
-            <input type="text" id="SomeTextInput" data-bind="sync:value" data-context="someText">
+            <input type="text" id="SomeTextInput" data-bind="send:value" data-context="someText" data-bind-on="change">
             <hr>
             <p data-bind="receive:innerHTML" data-context="someText"></p>
         </div>

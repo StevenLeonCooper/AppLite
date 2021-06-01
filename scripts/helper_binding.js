@@ -1,21 +1,81 @@
-import { events } from './custom_events.js';
 
 import mustache from './libs/mustache.js';
 
 import { getJsonPromise, getHtmlPromise } from './helper_ajax.js';
 
 export const bindings = {
-    pageContext: {},
-    elements: []
+    models: [],
+    views: []
 };
 
-class Binding {
-    constructor(element, action, target, subContext) {
+class Bindable {
+    constructor() {
+        this.subscribers = [];
+        this.subscriptions = [];
+    }
+
+    send() {
+        this.subscribers.forEach((item) => {
+            item.receive?.(this.getData());
+        });
+    }
+
+    receive(data) {
+        this.setData(data);
+    }
+
+    getData() {
+        // Implemented at the View/Model level
+    }
+
+    setData() {
+        // Implemented at the View/Modal level
+    }
+
+    subscribe(subscriber) {
+        this.subscribers.push(subscriber);
+        subscriber.subscriptions?.push(this);
+    }
+
+    unsubscribe(subscriber) {
+        this.subscribers = this.subscribers.filter(x => x == subscriber);
+        subscriber.subscriptions = subscriber.subscriptions.filter(x => x == this);
+    }
+}
+
+class View extends Bindable {
+    constructor(element) {
+        super();
+        let bindInfo = element.dataset.bind?.split(":");
+
         this.element = element;
-        this.action = action;
-        this.target = target;
-        this.subContext = subContext;
+        this.action = bindInfo?.[0];
+        this.target = bindInfo?.[1];
+        this.subContext = element.dataset.context;
         this.template = this.element.querySelector("template")?.innerHTML;
+
+        if (element.dataset.bindOn) {
+            element.addEventListener(element.dataset.bindOn, this.send.bind(this));
+        }
+    }
+    
+    setData(data) {
+        let method = `render_${this.target}`;
+        this[method]?.(data);
+    }
+
+    getData() {
+        let data = this.element[this.target] ?? null;
+
+        let wrapper = {};
+
+        wrapper[this.subContext ?? "data"] = data;
+
+        return wrapper;
+    }
+
+    setContext(context) {
+        this.subscriptions = [context];
     }
 
     render_innerHTML(context) {
@@ -36,42 +96,72 @@ class Binding {
     }
 }
 
-const buildItemLIst = () => {
+class Model extends Bindable {
+    constructor(data) {
+        super();
+        this.data = data;
+    }
+
+    getData() {
+        return this.data;
+    }
+
+    setData(data) {
+        this.data = { ...this.data, ...data }
+        this.send();
+    }
+}
+
+const getViews = () => {
 
     try {
+        let viewList = [];
+
         let targetList = document.querySelectorAll("[data-bind]");
-        let elementList = [];
 
         targetList.forEach((el) => {
 
-            let bindInfo = el.dataset.bind?.split(":");
-            let bindAction = bindInfo[0] ?? false;
-            let bindTarget = bindInfo[1] ?? false;
-            let subContext = el.dataset.context ?? "";
-
-            elementList.push(new Binding(el, bindAction, bindTarget, subContext));
+            viewList.push(new View(el));
 
         });
-        return elementList;
+        return viewList;
     } catch (error) {
-        return false;
+
+        return [error];
     }
 };
 
-const getContext = async (context) => {
+const getModel = async (context) => {
 
     try {
         if (typeof context === "object") {
-            return context;
+            return new Model(context);
         }
 
         let imported = await getJsonPromise(context);
 
-        return imported;
+        return new Model(imported);
+
     } catch (error) {
         return error;
     }
 };
+
+const subscribeReceivers = (receiverList, sender) => {
+    receiverList.forEach((item) => {
+        if (item.action === "receive") {
+            sender.subscribe(item);
+        }
+    });
+}
+
+const subscribeRecipients = (sendeeList, sender) => {
+    sendeeList.forEach((item) => {
+        if (sender.action === "send") {
+            sender.subscribe(item);
+        }
+    });
+}
 
 /**
  * - Setup Bindings
@@ -79,37 +169,36 @@ const getContext = async (context) => {
  */
 bindings.setup = async (context) => {
 
-    bindings.elements = buildItemLIst();
+    bindings.models.push(await getModel(context));
 
-    bindings.pageContext = await getContext(context);
+    bindings.views = getViews(bindings.pageContext);
 
-    bindings.update();
+    bindings.models.forEach((model) => {
+        subscribeReceivers(bindings.views, model);
+    });
+
+    bindings.views.forEach((view) => {
+        subscribeRecipients(bindings.models, view);
+    });
+
+    bindings.updateAll();
+
+    window._bindings = bindings;
+
 };
 
+bindings.update = (item) => {
+    item.send();
+}
 
-const Actions = {
-    sync: (binding, context) => {
-        console.log("Sync Not Defined Yet.");
-    },
-    send: (binding, context) => {
-        console.log("Send Not Defined Yet.");
-    },
-    receive: (binding, context) => {
+bindings.updateAll = () => {
 
-        let t = binding[binding.target];
+    bindings.models.forEach((model) => {
+        model.send();
+    });
 
-        binding?.["render_" + binding.target]?.(context);
-    }
-};
-
-bindings.update = () => {
-
-    bindings.elements.map((item) => {
-
-        let action = Actions[item.action];
-
-        action?.(item, bindings.pageContext);
-
+    bindings.views.forEach((view) => {
+        view.send();
     });
 
 };
