@@ -36,6 +36,7 @@ All helpers and most classes are optional so you could slim down this build to s
 * Cleanup dependencies to make customization easier and more intuitive. 
 * Add more documentation to maximize readability.
 * Add more thorough examples and demos. 
+* Add plugin system and/or alternatives to mustache.js for rendering templates. 
 
 # Classes and Helpers
 This app is organized into 4 categories: app, classes, helpers and custom. 
