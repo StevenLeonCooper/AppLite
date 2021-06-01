@@ -1,5 +1,8 @@
 import mustache from './libs/mustache.js';
 
+/**
+ * Class representing a bindable View or Model
+ */
 class Bindable {
     constructor() {
         this.subscribers = [];
@@ -35,6 +38,9 @@ class Bindable {
     }
 }
 
+/**
+ * Class representing an HTML view that is bound to a data Model
+ */
 export class View extends Bindable {
     constructor(element) {
         super();
@@ -93,6 +99,9 @@ export class View extends Bindable {
     }
 }
 
+/**
+ * Class representing a data Model which can be bound to an HTML View
+ */
 export class Model extends Bindable {
     constructor(data) {
         super();
