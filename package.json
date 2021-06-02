@@ -3,10 +3,18 @@
   "version": "1.0.0",
   "description": "WCAG Compliant Table Generation",
   "scripts": {
-    "build": "parcel build --no-content-hash ./index.html --public-url ./"
+    "build": "parcel build --no-content-hash ./index.html --public-url ./ --target full",
+    "build_js": "parcel build ./scripts/app.js --no-optimize --public-url ./ --target js",
+    "build_jsmin":"parcel build ./scripts/app.js --no-content-hash --public-url ./ --target jsmin"
   },
-  "main": "dist/app/index.html",
-
+  "full": "dist/app/index.html",
+  "js": "dist/js/app.js",
+  "jsmin": "dist/js/app.min.js",
+  "targets": {
+    "full": {},
+    "js": {},
+    "jsmin": {}
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -15,6 +23,6 @@
   },
   "dependencies": {},
   "browserslist": [
-    "Edge 17"
+    "Chrome 79"
   ]
 }

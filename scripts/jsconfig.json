@@ -1,16 +1,21 @@
 {
-    "compilerOptions": {
-      "module": "es6",
-      "target": "es5"
-    },
-    "include": [
-        "libs/mustache.js",
-        "helper_ajax.js",
-        "class_Modal.js",
-        "class_Request.js",
-        "class_Template.js",
-        "class_Benchmark.js",
-        "custom_events.js",
-        "app.js"
-    ]
-  }
+  "compilerOptions": {
+    "module": "es6",
+    "target": "es6"
+  },
+  "include": [
+    "libs/mustache.js",
+    "app.js",
+    "class_Benchmark.js",
+    "class_Bindable",
+    "class_Modal.js",
+    "class_Template.js",
+    "class_Request.js",
+    "custom_events.js",
+    "helper_ajax.js",
+    "helper_bindings.js",
+    "helper_template.js",
+    "helper_ui.js",
+    "../_setup.js"
+  ]
+}
