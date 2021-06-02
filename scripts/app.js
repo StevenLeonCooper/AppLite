@@ -56,6 +56,19 @@ document.body.onload = () => {
         console.log(error);
     });
 
+    let bar = new Template({
+        engine: "default",
+        autoRender: true,
+        target: "#TestArea3"
+    });
+
+    bar.importContext("api/test.json", true).then(() => {
+        bar.load();
+    }).catch((error) => {
+
+        console.log(error);
+    });
+
     // Let's get some data asynchronously and log it
     getJsonPromise("api/test.json")
         .then((result) => {

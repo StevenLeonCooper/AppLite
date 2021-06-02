@@ -1,16 +1,16 @@
 {
-    "people" : [
+    "people": [
         {
             "name": "Bob",
-            "occupation":"Firefighter"
+            "occupation": "Firefighter"
         },
         {
             "name": "Jan",
-            "occupation":"Doctor"
+            "occupation": "Doctor"
         },
         {
             "name": "Juan",
-            "occupation":"Mayor"
+            "occupation": "Mayor"
         }
     ],
     "places": [
@@ -19,6 +19,12 @@
         "New York",
         "Alaska"
     ],
-    "isCool" : true,
-    "someText": "Here's some text."
+    "isCool": true,
+    "someText": "Here's some text.",
+    "year": "2020",
+    "animal": {
+        "name": "dog",
+        "legs": 4,
+        "fur": true
+    }
 }

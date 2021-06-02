@@ -2,6 +2,8 @@ import { getJsonPromise, getHtmlPromise } from './helper_ajax.js';
 
 import Mustache from './libs/mustache.js';
 
+import {basicRender} from './helper_template.js';
+
 /**
  * - A class representing a template for rendering content onto the page. 
  */
@@ -23,7 +25,7 @@ export class Template {
 
         this.engines = {
             default: () => {
-                return this.html;
+                return basicRender(this.html, this.context);
             },
             mustache: () => {
                 return Mustache.render(this.html, this.context);
@@ -117,6 +119,11 @@ export class Template {
      * @returns a reference to the template instance for chaining. 
      */
     load(selector) {
+
+        if(!selector){
+            selector = `[data-template-for='${this.target.replace("#","")}']`
+        }
+
         let template = document.querySelector(selector);
 
         let engine = template.dataset.engine ?? "default";
@@ -137,6 +144,10 @@ export class Template {
      * @returns a reference to the tamplet instance for chaining. 
      */
     render(selector) {
+
+        if(!selector && this.target.length > 1){
+            selector = this.target;
+        }
 
         let target = document.querySelector(selector);
 

@@ -12,16 +12,26 @@
 
 <body id="PageBody">
     <div id="AppWrapper">
-        <h1>App Testing Page - Main Page</h1>
+        <h1>AppLite</h1>
         <p>
             This is purely for testing the JavaScript app. 
         </p>
+        <h2>Template Testing</h2>
         <div id="TestArea">
 
         </div>
         <div id="TestArea2">
 
         </div>
+        <div id="TestArea3">
+
+        </div>
+        <template data-template-for="TestArea3" data-engine="default">
+            <p>What's the animal's name? It's...</p>
+            <p><span data-context="animal.name"></span>
+            and it has <span data-context="animal.legs"></span> legs!
+            </p>
+        </template>
         <button data-click="hello">Say Hi</button>
 
         <hr>
