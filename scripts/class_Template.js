@@ -101,6 +101,7 @@ export class Template {
         let self = this;
 
         dataUrl = dataUrl ?? self.dataUrl;
+        
         templateUrl = templateUrl ?? self.templateUrl;
 
         await this.importPartial(templateUrl, true);
@@ -158,9 +159,6 @@ export class Template {
         if (target?.innerHTML) {
             target.innerHTML = rendered;
         }
-
-        console.log("Rendered HTML to Page")
-
         return this.rendered;
     }
 
