@@ -32,7 +32,18 @@ export class Template {
             }
         };
 
+        this.targetElement = document.querySelector(this.target);
+
         //let {prep_func: ()=>{ return (object, render)=>{//Code Here}}};
+    }
+
+    get target(){
+        return this.target;
+    }
+
+    set target(value){
+        this.target = value;
+        this.targetElement = document.querySelector(value);
     }
 
     /**
@@ -156,7 +167,7 @@ export class Template {
 
         this.rendered = rendered;
 
-        if (target?.innerHTML) {
+        if ("innerHTML" in target) {
             target.innerHTML = rendered;
         }
         return this.rendered;
