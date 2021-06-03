@@ -32,18 +32,11 @@ export class Template {
             }
         };
 
-        this.targetElement = document.querySelector(this.target);
-
         //let {prep_func: ()=>{ return (object, render)=>{//Code Here}}};
     }
 
-    get target(){
-        return this.target;
-    }
-
-    set target(value){
-        this.target = value;
-        this.targetElement = document.querySelector(value);
+    get targetElement(){
+        return document.querySelector(this.target);
     }
 
     /**
