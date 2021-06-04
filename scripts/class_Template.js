@@ -63,7 +63,7 @@ export class Template {
         url = url ?? self.htmlUrl;
 
         try {
-            let result = await ajax.getHtmlPromise(url);
+            let result = await ajax.getAny(url);
             self.html = result;
             if (self.autoRender && noRender != true) self.render(self.target);
             return result;
@@ -86,7 +86,7 @@ export class Template {
         url = url ?? self.dataUrl;
 
         try {
-            let result = await ajax.getJsonPromise(url);
+            let result = await ajax.getJSON(url);
             self.context = result;
             if (self.autoRender && noRender != true) self.render(self.target);
             return result;
@@ -109,7 +109,7 @@ export class Template {
                 elements = [];
 
             for (i; i < max; i++) {
-                let result = await ajax.getHtmlPromise(url[i]);
+                let result = await ajax.getAny(url[i]);
 
                 let container = document.createElement(type);
 

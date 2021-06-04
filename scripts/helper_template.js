@@ -1,5 +1,7 @@
 import { Template } from "./class_Template.js";
 
+import { handleError } from "./core_errors.js";
+
 export const template = {};
 
 /**
@@ -13,24 +15,29 @@ template.new = (settings) => {
 
 export const basicRender = (html, context) => {
 
-    let workshop = document.createElement("div");
+    try {
+        let workshop = document.createElement("div");
 
-    workshop.innerHTML = html;
+        workshop.innerHTML = html;
 
-    workshop.querySelectorAll("[data-context]").forEach((el) => {
+        workshop.querySelectorAll("[data-context]").forEach((el) => {
 
-        let binding = el.dataset.context?.split(".");
+            let binding = el.dataset.context?.split(".");
 
-        let cache = context;
+            let cache = context;
 
-        binding.forEach((key) => {
-            cache = cache[key];
+            binding.forEach((key) => {
+                cache = cache[key] ?? {};
+            });
+
+            interpretData(el, cache);
+
         });
-
-        interpretData(el, cache);
-
-    });
-    return workshop.innerHTML;
+        return workshop.innerHTML;
+    }
+    catch (error) {
+        handleError(error);
+    }
 };
 
 const interpretData = (element, data) => {

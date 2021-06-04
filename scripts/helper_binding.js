@@ -33,7 +33,7 @@ const getModel = async (context) => {
             return new Model(context);
         }
 
-        let imported = await ajax.getJsonPromise(context);
+        let imported = await ajax.getJSON(context);
 
         return new Model(imported);
 

@@ -1,8 +1,8 @@
 import {AddressBar, Benchmark} from './core_classes.js';
 
-import {handleError} from './core_errors.js';
-
 import { events } from './core_events.js';
+
+import {handleError} from './core_errors.js';
 
 import { ajax } from './helper_ajax.js';
 

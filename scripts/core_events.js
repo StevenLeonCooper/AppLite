@@ -2,8 +2,7 @@ export const events = {
     click: {},
     change: {},
     keyup: {},
-    actions: {},
-    trigger: triggerEvent
+    actions: {}
 };
 
 /**
@@ -40,7 +39,7 @@ const findTargets = (input) => {
  * @param {object} data 
  * @param {Array | String} element - A selector string, element or array of either. 
  */
-const triggerEvent = (name, data, input) => {
+events.trigger = (name, data, input) => {
 
     let targets = findTargets(input);
 

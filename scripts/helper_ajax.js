@@ -8,7 +8,7 @@ export const ajax = {};
  * @param {object} data 
  * @returns - A promise object with the result 
  */
-ajax.postDataPromise = (url, data) => {
+ajax.postData = (url, data) => {
     let request = new POST(data).to(url);
     return request.send();
 };
@@ -18,7 +18,7 @@ ajax.postDataPromise = (url, data) => {
  * @param {string} url 
  * @returns - A promise object with the result
  */
-ajax.getHtmlPromise = (url) => {
+ajax.getAny = (url) => {
     let request = new GET("HTML").from(url);
     return request.send();
 };
@@ -28,13 +28,13 @@ ajax.getHtmlPromise = (url) => {
  * @param {string} url 
  * @returns - A promise object with the result
  */
-ajax.getJsonPromise = (url) => {
+ajax.getJSON = (url) => {
     let request = new GET("JSON").from(url);
 
     return request.send();
 };
 
-ajax.getScriptPromise = async (url, parent) => {
+ajax.getScript = async (url, parent) => {
     try {
         parent = parent ?? document.head;
         let request = new GET("HTML").from(url);

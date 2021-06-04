@@ -10,6 +10,7 @@ export const handleError = (error) => {
         window._errors.push(error);
 
         events.trigger("Error", error, document);
+
     }
     catch (newError) {
         console.log(newError);
