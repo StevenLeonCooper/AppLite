@@ -3,7 +3,7 @@
 /**
  * Class representing a performance benchmark.
  */
- export class Benchmark {
+export class Benchmark {
     constructor(name) {
         this.name = name;
         this.start = performance.now();
@@ -30,7 +30,7 @@
 /**
  * Class representing the browser's address bar values
  */
- export class AddressBar {
+export class AddressBar {
     constructor() {
         this.urlParameters = {};
         this.initialValue = window.location.href;
@@ -49,5 +49,32 @@
 
     param(key) {
         return this.params[key] ?? null;
+    }
+
+    update(url, state) {
+        state = state || null;
+        history.pushState(state, "", url);
+    }
+
+    append(text, state) {
+        state = state || null;
+        let url = window.location.href + text;
+        this.update(url, state);
+    }
+
+    changeQuery(text, state) {
+        state = state || null;
+        let url = window.location.search !== "" ? window.location.href : window.location.href + "?";
+        let search = window.location.search || "?";
+        url = url.replace(search, text);
+        this.update(url, state);
+    }
+
+    navigate(url) {
+        window.location.href = url;
+    }
+
+    redirect(url) {
+        window.location.replace(url);
     }
 }
