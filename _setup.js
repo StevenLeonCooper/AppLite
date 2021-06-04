@@ -8,6 +8,17 @@ import { app } from './scripts/app.js';
 
 document.body.onload = () => {
 
+    console.log(app.addressBar.param("bitch"));
+
+
+    app.getScript("./scripts/libs/jquery-3.6.0.js").then((res) => {
+
+        if (res) {
+            $("#test").html("WINNING!");
+        }
+
+    });
+
     // Example: Setup a template where the data AND template need to be downladed. 
     // In this example, are only do 1 function call and everything else is in the settings. 
     // You could leave the settings blank & setup everything with functions as well. 
@@ -17,13 +28,19 @@ document.body.onload = () => {
         autoRender: true,
         dataUrl: "api/test.json",
         htmlUrl: "api/partial.html",
-        target: "#TestArea"
+        target: "#TestArea",
+        stylesheets: ["css/test.css", "css/index.css"],
+        scripts: "scripts/libs/jquery-3.6.0.min.js"
     });
 
     // importPackage returns a promise so we can use the standard then/catch syntax if we want.
-    foo.importPackage().catch((error) => {
-        console.log(error);
-    });
+    foo.importPackage()
+        .then(() => {
+            window._debug = foo;
+        }).catch((error) => {
+            console.log(error);
+
+        });
 
     let bar = new app.Template({
         engine: "default",

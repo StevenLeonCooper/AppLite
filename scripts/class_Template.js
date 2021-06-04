@@ -1,8 +1,8 @@
-import { getJsonPromise, getHtmlPromise } from './helper_ajax.js';
+import { getJsonPromise, getHtmlPromise, getScriptPromise } from './helper_ajax.js';
 
 import Mustache from './libs/mustache.js';
 
-import {basicRender} from './helper_template.js';
+import { basicRender } from './helper_template.js';
 
 /**
  * - A class representing a template for rendering content onto the page. 
@@ -22,6 +22,8 @@ export class Template {
         this.dataUrl = this.dataUrl ?? null;
         this.htmlUrl = this.htmlUrl ?? null;
         this.autoRender = this.autoRender || false;
+        this.stylesheets = this.stylesheets || null;
+        this.scripts = this.scripts || null;
 
         this.engines = {
             default: () => {
@@ -35,7 +37,7 @@ export class Template {
         //let {prep_func: ()=>{ return (object, render)=>{//Code Here}}};
     }
 
-    get targetElement(){
+    get targetElement() {
         return document.querySelector(this.target);
     }
 
@@ -94,23 +96,62 @@ export class Template {
         }
     }
 
+    async importElement(url, type, parent) {
+
+        const self = this;
+
+        if (typeof url !== "string" && !Array.isArray(url)) {  return false; }
+
+        url = Array.isArray(url) ? url : [url];
+
+        try {
+            let i = 0, max = url.length,
+            elements = [];
+
+            for(i; i < max; i++)
+            {
+                let result = await getHtmlPromise(url[i]);
+
+                let container = document.createElement(type);
+    
+                container.innerHTML = result;
+    
+                parent.appendChild(container);
+
+                elements.push(container);
+            }
+            return elements;
+        }
+        catch (error) {
+            return error;
+        }
+    }
+
     /**
      * - Gets JSON/HTML from a URL and sets the context & html fields. 
      * @param {string} dataUrl - URL of JSON string
      * @param {*} templateUrl - URL of HTML text
      * @returns a promise object with a reference to the template. 
      */
-    async importPackage(dataUrl, templateUrl) {
+    async importPackage(dataUrl, templateUrl, stylesheetUrl, scriptUrl) {
 
         let self = this;
 
         dataUrl = dataUrl ?? self.dataUrl;
-        
+
         templateUrl = templateUrl ?? self.templateUrl;
+
+        stylesheetUrl = stylesheetUrl ?? self.stylesheets;
+
+        scriptUrl = scriptUrl ?? self.scripts;
 
         await this.importPartial(templateUrl, true);
 
         await this.importContext(dataUrl, true);
+
+        self.stylesheets = await this.importElement(stylesheetUrl, "style", document.head);
+
+        self.scripts = await this.importElement(scriptUrl, "script", document.head);
 
         if (self.autoRender) self.render(self.target);
 
@@ -125,8 +166,8 @@ export class Template {
      */
     load(selector) {
 
-        if(!selector){
-            selector = `[data-template-for='${this.target.replace("#","")}']`
+        if (!selector) {
+            selector = `[data-template-for='${this.target.replace("#", "")}']`
         }
 
         let template = document.querySelector(selector);
@@ -150,7 +191,7 @@ export class Template {
      */
     render(selector) {
 
-        if(!selector && this.target.length > 1){
+        if (!selector && this.target.length > 1) {
             selector = this.target;
         }
 

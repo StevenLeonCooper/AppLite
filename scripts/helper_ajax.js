@@ -1,40 +1,6 @@
 import { GET, POST } from './class_Request.js';
 
 /**
- * - Deprecated, I recommend using the promisified version. 
- * @param {string} url 
- * @param {function} callback 
- * @param {function} onError 
- */
-export const getJSON = (url, callback, onError) => {
-    let request = new GET("JSON").from(url).then(callback).catch(onError);
-    request.now();
-}
-
-/**
- * - Deprecated, I recommend using the promisified version. 
- * @param {string} url 
- * @param {function} callback 
- * @param {function} onError 
- */
-export const getHTML = (url, callback, onError) => {
-    let request = new GET("HTML").from(url).then(callback).catch(onError);
-    request.now();
-};
-
-/**
- * - Deprecated, I recommend using the promisified version. 
- * @param {string} url 
- * @param {object} data
- * @param {function} callback 
- * @param {function} onError 
- */
-export const postData = (url, data, callback, onError) => {
-    let request = new POST(data).to(url).then(callback).catch(onError);
-    request.now();
-};
-
-/**
  * - Post data asynchronously to a URL. 
  * @param {string} url 
  * @param {object} data 
@@ -66,4 +32,18 @@ export const getJsonPromise = (url) => {
     return request.send();
 };
 
+export const getScriptPromise = async (url, parent) => {
+    try {
+        parent = parent ?? document.head;
+        let request = new GET("HTML").from(url);
+        let result = await request.send();
+        let script = document.createElement("script");
+        script.innerHTML = result;
+        parent.appendChild(script);
+        return true;
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
 
