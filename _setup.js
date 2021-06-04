@@ -65,8 +65,8 @@ document.body.onload = () => {
         try {
             let url = "api/greeting.html";
             let result = await app.ajax.getAny(url);
-            let message = new app.Modal(result);
-            message.show();
+            app.modal.message(result);
+
         }
         catch (error) {
             console.log(error);
