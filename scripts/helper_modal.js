@@ -2,7 +2,7 @@ import { Modal } from './class_Modal.js';
 
 export const modal = {};
 
-modal.message = (content) => {
+modal.show = (content) => {
     let modal = new Modal(content);
     modal.show();
 }
