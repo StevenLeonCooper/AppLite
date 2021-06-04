@@ -1,44 +1,19 @@
-import { events } from './custom_events.js';
+import {AddressBar, Benchmark} from './core_classes.js';
 
-import { getHtmlPromise, getJsonPromise, postDataPromise, getScriptPromise } from './helper_ajax.js';
+import {handleError} from './core_errors.js';
 
-import { ui } from './helper_ui.js';
+import { events } from './core_events.js';
+
 
 /**
- * Class representing the browser's address bar values
- */
-class AddressBar {
-    constructor() {
-        this.urlParameters = {};
-        this.initialValue = window.location.href;
-    }
-
-    get params() {
-        let queryString = window.location.search.replace("?", "");
-        let params = queryString.split("&");
-        params.forEach((pair) => {
-            let arr = pair.split("=");
-            this.urlParameters[arr[0]] = arr[1];
-        });
-
-        return this.urlParameters;
-    }
-
-    param(key) {
-        return this.params[key] ?? null;
-    }
-
-}
-/**
- * The lite AppLite app object with only the essentials. 
+ * The bare minimum files for applite to function. This version
+ * Only has event delegation, error handling, URL parameters and
+ * the Benchmark class for testing speed. 
  */
 export const app = {
+    Benchmark: Benchmark,
     events: events,
-    ui: ui,
-    getHTML: getHtmlPromise,
-    getJSON: getJsonPromise,
-    postData: postDataPromise,
-    getScript: getScriptPromise,
+    handleError: handleError,
     addressBar: new AddressBar(),
     setup: (() => {
         window.isModule = true;
@@ -61,6 +36,8 @@ export const app = {
         });
         return true;
     })()
+
+
 };
 
 

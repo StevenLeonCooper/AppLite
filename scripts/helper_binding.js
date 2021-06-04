@@ -1,6 +1,6 @@
 import { View, Model } from './class_Bindable.js';
 
-import { getJsonPromise, getHtmlPromise } from './helper_ajax.js';
+import { ajax } from './helper_ajax.js';
 
 export const bindings = {
     models: [],
@@ -33,7 +33,7 @@ const getModel = async (context) => {
             return new Model(context);
         }
 
-        let imported = await getJsonPromise(context);
+        let imported = await ajax.getJsonPromise(context);
 
         return new Model(imported);
 

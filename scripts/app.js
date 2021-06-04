@@ -1,56 +1,32 @@
-import { events } from './custom_events.js';
+import {AddressBar, Benchmark} from './core_classes.js';
 
-import { getHtmlPromise, getJsonPromise, postDataPromise, getScriptPromise } from './helper_ajax.js';
+import {handleError} from './core_errors.js';
 
-import { Template } from './class_Template.js';
+import { events } from './core_events.js';
 
-import { Modal } from './class_Modal.js';
-
-import { Benchmark } from './class_Benchmark.js';
+import { ajax } from './helper_ajax.js';
 
 import { bindings } from './helper_binding.js';
 
-import { ui } from './helper_ui.js';
+import { modal } from './helper_modal.js';
 
-/**
- * Class representing the browser's address bar values
- */
-class AddressBar {
-    constructor() {
-        this.urlParameters = {};
-        this.initialValue = window.location.href;
-    }
+import { template } from './helper_template.js';
 
-    get params() {
-        let queryString = window.location.search.replace("?", "");
-        let params = queryString.split("&");
-        params.forEach((pair) => {
-            let arr = pair.split("=");
-            this.urlParameters[arr[0]] = arr[1];
-        });
+// Some may prefer to just use this class as-is without the helper. 
+import { Template } from './class_Template.js';
 
-        return this.urlParameters;
-    }
-
-    param(key) {
-        return this.params[key] ?? null;
-    }
-
-}
 /**
  * The full AppLite app object with all optional modules. 
  */
 export const app = {
     Template: Template,
-    Modal: Modal,
     Benchmark: Benchmark,
+    template: template,
     events: events,
     bindings: bindings,
-    ui: ui,
-    getHTML: getHtmlPromise,
-    getJSON: getJsonPromise,
-    postData: postDataPromise,
-    getScript: getScriptPromise,
+    modal: modal,
+    ajax: ajax,
+    handleError: handleError,
     addressBar: new AddressBar(),
     setup: (() => {
         window.isModule = true;
@@ -73,6 +49,8 @@ export const app = {
         });
         return true;
     })()
+
+
 };
 
 

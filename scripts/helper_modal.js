@@ -1,23 +1,23 @@
 import { Modal } from './class_Modal.js';
 
-export const ui = {};
+export const modal = {};
 
-ui.message = (content) => {
+modal.message = (content) => {
     let modal = new Modal(content);
     modal.show();
 }
 
-ui.alert = (content) => {
+modal.alert = (content) => {
     let modal = new Modal(content);
     modal.alert();
 };
 
-ui.warn = (content) => {
+modal.warn = (content) => {
     let modal = new Modal(content);
     return modal.warn();
 };
 
-ui.confirm = async (content) => {
+modal.confirm = async (content) => {
 
     try {
         let modal = new Modal(content);
@@ -30,7 +30,7 @@ ui.confirm = async (content) => {
     }
 };
 
-ui.textInput = async (content) => {
+modal.textInput = async (content) => {
     try {
         let modal = new Modal(content);
 

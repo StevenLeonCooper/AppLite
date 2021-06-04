@@ -6,16 +6,17 @@
   "include": [
     "libs/mustache.js",
     "app.js",
-    "class_Benchmark.js",
     "class_Bindable",
     "class_Modal.js",
-    "class_Template.js",
     "class_Request.js",
-    "custom_events.js",
+    "class_Template.js",
+    "core_classes.js",
+    "core_errors.js",
+    "core_events.js",
     "helper_ajax.js",
-    "helper_bindings.js",
+    "helper_binding.js",
     "helper_template.js",
-    "helper_ui.js",
+    "helper_modal.js",
     "../_setup.js"
   ]
 }

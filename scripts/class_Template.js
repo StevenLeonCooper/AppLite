@@ -1,4 +1,4 @@
-import { getJsonPromise, getHtmlPromise, getScriptPromise } from './helper_ajax.js';
+import { ajax } from './helper_ajax.js';
 
 import Mustache from './libs/mustache.js';
 
@@ -63,7 +63,7 @@ export class Template {
         url = url ?? self.htmlUrl;
 
         try {
-            let result = await getHtmlPromise(url);
+            let result = await ajax.getHtmlPromise(url);
             self.html = result;
             if (self.autoRender && noRender != true) self.render(self.target);
             return result;
@@ -86,7 +86,7 @@ export class Template {
         url = url ?? self.dataUrl;
 
         try {
-            let result = await getJsonPromise(url);
+            let result = await ajax.getJsonPromise(url);
             self.context = result;
             if (self.autoRender && noRender != true) self.render(self.target);
             return result;
@@ -100,22 +100,21 @@ export class Template {
 
         const self = this;
 
-        if (typeof url !== "string" && !Array.isArray(url)) {  return false; }
+        if (typeof url !== "string" && !Array.isArray(url)) { return false; }
 
         url = Array.isArray(url) ? url : [url];
 
         try {
             let i = 0, max = url.length,
-            elements = [];
+                elements = [];
 
-            for(i; i < max; i++)
-            {
-                let result = await getHtmlPromise(url[i]);
+            for (i; i < max; i++) {
+                let result = await ajax.getHtmlPromise(url[i]);
 
                 let container = document.createElement(type);
-    
+
                 container.innerHTML = result;
-    
+
                 parent.appendChild(container);
 
                 elements.push(container);

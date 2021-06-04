@@ -1,12 +1,14 @@
 import { GET, POST } from './class_Request.js';
 
+export const ajax = {};
+
 /**
  * - Post data asynchronously to a URL. 
  * @param {string} url 
  * @param {object} data 
  * @returns - A promise object with the result 
  */
-export const postDataPromise = (url, data) => {
+ajax.postDataPromise = (url, data) => {
     let request = new POST(data).to(url);
     return request.send();
 };
@@ -16,7 +18,7 @@ export const postDataPromise = (url, data) => {
  * @param {string} url 
  * @returns - A promise object with the result
  */
-export const getHtmlPromise = (url) => {
+ajax.getHtmlPromise = (url) => {
     let request = new GET("HTML").from(url);
     return request.send();
 };
@@ -26,13 +28,13 @@ export const getHtmlPromise = (url) => {
  * @param {string} url 
  * @returns - A promise object with the result
  */
-export const getJsonPromise = (url) => {
+ajax.getJsonPromise = (url) => {
     let request = new GET("JSON").from(url);
 
     return request.send();
 };
 
-export const getScriptPromise = async (url, parent) => {
+ajax.getScriptPromise = async (url, parent) => {
     try {
         parent = parent ?? document.head;
         let request = new GET("HTML").from(url);
