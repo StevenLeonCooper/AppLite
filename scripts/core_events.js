@@ -27,7 +27,7 @@ const findTargets = (input) => {
         output = Array.from(document.querySelectorAll(input));
         return output;
     }
-    if ("innerHTML" in input) {
+    if (input instanceof Node) {
         output = [input];
     }
     return output;
@@ -42,8 +42,6 @@ const findTargets = (input) => {
 events.trigger = (name, data, input) => {
 
     let targets = findTargets(input);
-
-    console.log(targets);
 
     let eventData = { detail: data };
 

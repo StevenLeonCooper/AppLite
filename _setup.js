@@ -6,6 +6,14 @@
 
 import { app } from './scripts/app.js';
 
+// Here's one (bad) way you could handle errors beyond just logging them. 
+document.addEventListener("Error", (event)=>{
+
+    app.modal.warn(`An Error Occured!<br>Error: ${event.detail.message} `);
+
+});
+
+
 document.body.onload = () => {
 
    app.ajax.getScript("./scripts/libs/jquery-3.6.0.js").then((res) => {
