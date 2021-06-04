@@ -2,14 +2,6 @@ import { events } from './custom_events.js';
 
 import { getHtmlPromise, getJsonPromise, postDataPromise, getScriptPromise } from './helper_ajax.js';
 
-import { Template } from './class_Template.js';
-
-import { Modal } from './class_Modal.js';
-
-import { Benchmark } from './class_Benchmark.js';
-
-import { bindings } from './helper_binding.js';
-
 import { ui } from './helper_ui.js';
 
 /**
@@ -38,14 +30,10 @@ class AddressBar {
 
 }
 /**
- * The full AppLite app object with all optional modules. 
+ * The lite AppLite app object with only the essentials. 
  */
 export const app = {
-    Template: Template,
-    Modal: Modal,
-    Benchmark: Benchmark,
     events: events,
-    bindings: bindings,
     ui: ui,
     getHTML: getHtmlPromise,
     getJSON: getJsonPromise,
