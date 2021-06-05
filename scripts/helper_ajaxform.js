@@ -55,7 +55,6 @@ AjaxForm.setup = () => {
             e.preventDefault();
             e.stopPropagation();
             AjaxForm.submit(e.target);
-            events.trigger();
         }
     });
 };
