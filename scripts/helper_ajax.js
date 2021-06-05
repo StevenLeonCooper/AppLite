@@ -18,8 +18,8 @@ ajax.postData = (url, data) => {
  * @param {string} url 
  * @returns - A promise object with the result
  */
-ajax.getAny = (url) => {
-    let request = new GET("HTML").from(url);
+ajax.getAny = (url, data) => {
+    let request = new GET("HTML").from(url).using(data);
     return request.send();
 };
 
@@ -28,8 +28,8 @@ ajax.getAny = (url) => {
  * @param {string} url 
  * @returns - A promise object with the result
  */
-ajax.getJSON = (url) => {
-    let request = new GET("JSON").from(url);
+ajax.getJSON = (url, data) => {
+    let request = new GET("JSON").from(url).using(data);
 
     return request.send();
 };

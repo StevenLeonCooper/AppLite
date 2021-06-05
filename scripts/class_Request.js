@@ -51,7 +51,7 @@ export class Request {
      * @returns a self reference for chaining.
      */
     using(data) {
-        this.data = data;
+        this.data = data ?? {};
         return this;
     }
 

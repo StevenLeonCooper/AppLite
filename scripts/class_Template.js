@@ -85,6 +85,13 @@ export class Template {
 
         url = url ?? self.dataUrl;
 
+        if (url === null) { return null; }
+
+        if(typeof url === "object"){
+            self.context = url;
+            return url;
+        }
+
         try {
             let result = await ajax.getJSON(url);
             self.context = result;
