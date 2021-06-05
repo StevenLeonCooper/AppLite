@@ -14,11 +14,13 @@ AjaxForm.submit = (form) => {
             formData[el.id] = el.value;
         });
     
-    // Complex inputs with no simple "value" element to congregate data. 
+    // Complex inputs with no simple "value" element to aggregate data. 
     form.querySelectorAll("input[type='radio']:checked, input[type='checkbox']:checked")
         .forEach((el) => {
             formData[el.name] = el.value;
         });
+
+    //Submit Data (TODO: what happens after?)
     app.ajax.postData(form.getAttribute("action"), formData)
         .then((result) => {
             window._debug = result;
