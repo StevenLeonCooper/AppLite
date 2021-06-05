@@ -34,7 +34,7 @@ export const app = {
         * Here we add event listeners and setup the app. 
         */
         document.body.addEventListener("keyup", (e) => {
-
+        
             events.keyup[e.target.dataset.keyup]?.(e.target, e);
         });
 

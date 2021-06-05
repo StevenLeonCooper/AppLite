@@ -5,7 +5,7 @@ $RequestData = $_POST; //json_decode(file_get_contents("php://input"), true);
 
 //print_r($RequestData);
 
-if ($RequestData['fail'] === true) {
+if ($RequestData['fail'] == true) {
     header(http_response_code(500));
 ?>
     {

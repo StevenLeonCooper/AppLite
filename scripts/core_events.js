@@ -1,9 +1,9 @@
-export const events = {
-    click: {},
-    change: {},
-    keyup: {},
-    actions: {}
-};
+export const events = {};
+
+events.click = {};
+events.change = {};
+events.keyup = {};
+events.actions = {};
 
 /**
  * Converts input into an array of elements. 
@@ -11,6 +11,10 @@ export const events = {
  * @returns 
  */
 const findTargets = (input) => {
+    if(!input || input === null)
+    {
+        return ["body"];
+    }
     let output = [];
     if (Array.isArray(input)) {
         input.forEach((item) => {
@@ -31,7 +35,7 @@ const findTargets = (input) => {
         output = [input];
     }
     return output;
-}
+};
 
 /**
  * - Trigger an event (like jQuery's $().trigger)
@@ -51,3 +55,4 @@ events.trigger = (name, data, input) => {
         element.dispatchEvent?.(event, eventData);
     });
 };
+

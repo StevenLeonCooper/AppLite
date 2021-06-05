@@ -17,7 +17,14 @@
         <p>
             Send forms via AJAX
         </p>
-        <form action="/api/handle-form.php" method="POST" data-dynamic="true">
+        <div id="ResultArea">
+        </div>
+        <template data-template-for="ResultArea" data-engine="mustache">
+            <strong>{{status}}</strong>
+            <hr>
+            <p>{{first_name}} {{last_name}}</p>
+        </template>
+        <form id="MyForm" action="/api/handle-form.php" method="POST" data-dynamic="true" data-on-success="render:#ResultArea" data-on-error="render:#ResultArea">
 
             <h2>Form Data</h2>
             <hr>
