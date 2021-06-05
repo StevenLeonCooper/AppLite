@@ -92,13 +92,18 @@ export class Request {
         }
     }
 
+    _encodePostData(obj) {
+        return Object.keys(obj).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&')
+    };
+    
     /**
      * WARNING: This function is "private" & may return unexpected results. 
      * This function formates the headers and/or data for POST/GET requests. 
      */
     _prepHeaders() {
         if (this.requestType === "POST") {
-            this.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+            this.data = this._encodePostData(this.data);
+            this.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         }
         if (this.requestType === "GET") {
             var str = Object.keys(this.data).map(key => `${key}=${this.data[key]}`).join("&");
@@ -111,13 +116,13 @@ export class Request {
      * @returns A promise object with the result.
      */
     async send() {
-        this._prepHeaders();
+        const Request = this;
 
         return new Promise((resolve, reject) => {
-            
-            const Request = this;
 
             Request.xhr.open(Request.requestType, Request.url, true);
+
+            Request._prepHeaders.bind(Request)();
 
             Request.xhr.onload = function () {
                 if (this.status >= 200 && this.status < 400) {
@@ -131,7 +136,6 @@ export class Request {
             };
             // INITIATE AJAX REQUEST
             Request.xhr.send(Request.data);
-
         });
     }
 

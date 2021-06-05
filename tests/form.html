@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>App Testing Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/index.css">
+    <style>
+        /* Special styles that override linked stylesheets. */
+    </style>
+</head>
+
+<body id="PageBody">
+    <div id="AppWrapper">
+        <h1>AppLite Forms</h1>
+        <p>
+            Send forms via AJAX
+        </p>
+        <form action="/api/handle-form.php" method="POST" data-dynamic="true">
+
+            <h2>Form Data</h2>
+            <hr>
+            <label for="fail">Force Failure?</label>
+            <select id="fail">
+                <option>false</option>
+                <option>true</option>
+            </select>
+            <hr>
+            <strong>Favorite Weather?</strong><br>
+            <input type="radio" id="cold" name="weather" value="cold">
+            <label for="cold">Cold</label><br>
+            <input type="radio" id="hot" name="weather" value="hot">
+            <label for="hot">Hot</label><br>
+            <input type="radio" id="other" name="weather" value="other">
+            <label for="other">Other</label>
+            <hr>
+            <strong>Your Vehicles?</strong><br>
+            <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+            <label for="vehicle1"> I have a bike</label><br>
+            <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+            <label for="vehicle2"> I have a car</label><br>
+            <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+            <label for="vehicle3"> I have a boat</label>
+            <hr>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" size="30" />
+            <hr>
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" size="30" />
+            <hr>
+            <label for="essay">Essay Question:</label><br>
+            <textarea id="essay">Write Essay Here</textarea>
+            <hr>
+            <input id="SubmitButton" type="submit" value="Submit Form" />
+        </form>
+    </div>
+
+
+    <script type="module" src="_setup.js"></script>
+</body>
+
+</html>
