@@ -12,8 +12,7 @@ const actions = {
     render: (data, targetSelector) => {
         let t = new Template({
             target: targetSelector,
-            context: data,
-            engine: "mustache"
+            context: data
         });
         t.load().render();
     },
