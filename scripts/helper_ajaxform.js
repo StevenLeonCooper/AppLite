@@ -16,8 +16,13 @@ const actions = {
         });
         t.load().render();
     },
-    alert: (_data, message) => {
+    message: (_data, message) => {
         modal.alert(message);
+    },
+    modal: (data, templateSelector) =>{
+        let t = new Template({context: data});
+        t.load(templateSelector).render();
+        modal.alert(t.rendered);
     },
     redirect: (_data, url) => {
         let loc = new AddressBar();
@@ -30,7 +35,7 @@ const actions = {
 
 AjaxForm.error = (form, error) => {
     let toDo = [];
-    toDo = form.dataset.onError?.split(":") ?? ["alert","Error"]
+    toDo = form.dataset.onError?.split(": ") ?? ["alert","Error"]
     let action = toDo[0];
     let target = toDo[1];
     actions[action]?.(error, target);
@@ -40,7 +45,7 @@ AjaxForm.error = (form, error) => {
 
 AjaxForm.success = (form, result) => {
     let toDo = [];
-    toDo = form.dataset.onSuccess?.split(":") ?? ["alert","Success"]
+    toDo = form.dataset.onSuccess?.split(": ") ?? ["alert","Success"]
     let action = toDo[0];
     let target = toDo[1];
     actions[action]?.(result, target);

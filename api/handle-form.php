@@ -3,13 +3,14 @@ header('Content-type: application/json');
 
 $RequestData = $_POST; //json_decode(file_get_contents("php://input"), true);
 
-//print_r($RequestData);
 
-if ($RequestData['fail'] == true) {
-    header(http_response_code(500));
+
+if ($RequestData['fail'] == "true") {
+    //header(http_response_code(500));
 ?>
     {
-    "status" : "fail"
+    "status" : "fail",
+    "details": "<?php echo($RequestData['fail']); ?>"
     }
 <?php
     exit();

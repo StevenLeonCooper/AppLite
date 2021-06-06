@@ -207,7 +207,7 @@ export class Template {
 
         this.rendered = rendered;
 
-        if ("innerHTML" in target) {
+        if (target instanceof Node) {
             target.innerHTML = rendered;
         }
         return this.rendered;
