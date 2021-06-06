@@ -77,4 +77,20 @@ export class AddressBar {
     redirect(url) {
         window.location.replace(url);
     }
+
+    /**
+     * Executes an ANONYMOUS async function before navigating. 
+     * You can use this to execute a warning diaglogue. 
+     * The implementation is generic to prevent this module from having any dependencies.  
+     * @param {Promise} asyncFunction - A Promise object
+     * @param {String} url 
+     */
+    safeNavigate(asyncFunction, url) {
+        if(!(asyncFunction instanceof Promise)){
+            throw("Incorrect Input Type for safeNavigate()");
+        }
+        asyncFunction().then(() => {
+            this.navigate(url);
+        });
+    }
 }
