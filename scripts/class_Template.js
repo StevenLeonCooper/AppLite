@@ -3,6 +3,7 @@ import { ajax } from './helper_ajax.js';
 import Mustache from './libs/mustache.js';
 
 import { basicRender } from './helper_template.js';
+import { handleError } from './core_errors.js';
 
 /**
  * - A class representing a template for rendering content onto the page. 
@@ -48,6 +49,7 @@ export class Template {
      */
     enhanceContext(items) {
         Object.assign(this.context, items);
+        return this;
     }
 
     /**
@@ -65,11 +67,12 @@ export class Template {
         try {
             let result = await ajax.getAny(url);
             self.html = result;
-            if (self.autoRender && noRender != true) self.render(self.target);
-            return result;
+            if (self.autoRender && noRender != true) self.render();
+            return self;
         }
         catch (error) {
-            return error;
+            handleError(error);
+            return self;
         }
     }
 
@@ -89,25 +92,36 @@ export class Template {
 
         if(typeof url === "object"){
             self.context = url;
-            return url;
+            return self;
         }
 
         try {
             let result = await ajax.getJSON(url);
             self.context = result;
-            if (self.autoRender && noRender != true) self.render(self.target);
-            return result;
+            if (self.autoRender && noRender != true) self.render();
+            return self;
         }
         catch (error) {
-            return error;
+            handleError(error);
+            return self;
         }
     }
 
-    async importElement(url, type, parent) {
+    /**
+     * Imports a DOM Element.
+     * @param {String | Array} url - URL or Array of URLs
+     * @param {*} type 
+     * @param {*} parent 
+     * @returns 
+     */
+    async importElement(url, type, parent, property) {
 
         const self = this;
 
-        if (typeof url !== "string" && !Array.isArray(url)) { return false; }
+        if (typeof url !== "string" && !Array.isArray(url)) { 
+            handleError("importElement, Invalid url");
+            return self; 
+        }
 
         url = Array.isArray(url) ? url : [url];
 
@@ -126,10 +140,13 @@ export class Template {
 
                 elements.push(container);
             }
-            return elements;
+            self[property] = elements; 
+
+            return self;
         }
         catch (error) {
-            return error;
+            handleError(error);
+            return self;
         }
     }
 
@@ -155,11 +172,11 @@ export class Template {
 
         await this.importContext(dataUrl, true);
 
-        self.stylesheets = await this.importElement(stylesheetUrl, "style", document.head);
+        await this.importElement(stylesheetUrl, "style", document.head, "stylesheets");
 
-        self.scripts = await this.importElement(scriptUrl, "script", document.head);
+        await this.importElement(scriptUrl, "script", document.head, "scripts");
 
-        if (self.autoRender) self.render(self.target);
+        if (self.autoRender) self.render();
 
         return self;
     }
@@ -184,7 +201,7 @@ export class Template {
 
         this.engine = engine;
 
-        if (this.autoRender) this.render(this.target);
+        if (this.autoRender) this.render();
 
         return this;
     }
@@ -210,7 +227,7 @@ export class Template {
         if (target instanceof Node) {
             target.innerHTML = rendered;
         }
-        return this.rendered;
+        return this;
     }
 
 }

@@ -5,7 +5,6 @@ import { events } from "./core_events.js";
 import { ajax } from "./helper_ajax.js";
 import { modal } from "./helper_modal.js";
 
-
 export const AjaxForm = {};
 
 const actions = {
@@ -51,7 +50,6 @@ AjaxForm.success = (form, result) => {
     actions[action]?.(result, target);
     events.trigger(`${form.id}: Success`, result, `#${form.id}`);
 };
-
 
 AjaxForm.setup = () => {
     document.addEventListener("submit", (e) => {

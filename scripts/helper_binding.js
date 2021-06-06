@@ -2,10 +2,10 @@ import { View, Model } from './class_Bindable.js';
 
 import { ajax } from './helper_ajax.js';
 
-export const bindings = {
-    models: [],
-    views: []
-};
+export const bindings = {};
+
+bindings.models =  [];
+bindings.views = [];
 
 const getViews = () => {
 
