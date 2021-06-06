@@ -34,33 +34,30 @@ const actions = {
     },
     navigate: (_data, url) => {
         let loc = new AddressBar();
-        // loc.safeNavigate(async () => {
-        //     return await modal.interrupt("Redirecting.");
-        // }, url);
-
-        loc.safeNavigate(()=>{}, url);
+        loc.safeNavigate(url, async () => {
+            return await modal.interrupt("Redirecting.");
+        });
     },
     eventAction: (data, eventName) => {
         events.actions[eventName]?.(data);
     }
 };
 
-AjaxForm.error = (form, error) => {
-    let toDo = [];
-    toDo = form.dataset.onError?.split(": ") ?? ["silent", "Error"]
+function doAction(key, parameter) {
+    let toDo = key?.split?.(": ") ?? ["silent", "Error"]
     let action = toDo[0];
     let target = toDo[1];
-    actions[action]?.(error, target);
+    actions[action]?.(parameter, target);
+}
+
+AjaxForm.error = (form, error) => {
+    doAction(form.dataset.onError, error);
     handleError(error);
     events.trigger(`${form.id}: Failure`, error, `#${form.id}`);
 };
 
 AjaxForm.success = (form, result) => {
-    let toDo = [];
-    toDo = form.dataset.onSuccess?.split(": ") ?? ["alert", "Success"]
-    let action = toDo[0];
-    let target = toDo[1];
-    actions[action]?.(result, target);
+    doAction(form.dataset.onSuccess, result);
     events.trigger(`${form.id}: Success`, result, `#${form.id}`);
 };
 
