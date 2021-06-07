@@ -7,6 +7,10 @@ import { handleError } from './core_errors.js';
 
 /**
  * - A class representing a template for rendering content onto the page. 
+ * Setup options include: target (selector/node), dataUrl (url), htmlUrl (url),
+ * method (string: replace, append, prepend, appendOnce or prependOnce), 
+ * stylesheets (array of URLs), scripts (array of URLs), autoRender (bool),
+ * context (data object), html (template HTML), engine (string: mustache/default).
  */
 export class Template {
     constructor(settings) {
@@ -14,29 +18,30 @@ export class Template {
         if (typeof settings === "object") {
             Object.assign(this, settings);
         }
-        this.renderCount = 0;
-        this.context = this.context || {};
-        this.method = this.method || "replace";
-        this.html = this.html ?? "";
-        this.engine = this.engine ?? "mustache";
+        // Setup Properties 
         this.target = this.target ?? "#NoTargetSelected";
-        this.rendered = this.rendered ?? "";
         this.dataUrl = this.dataUrl ?? null;
         this.htmlUrl = this.htmlUrl ?? null;
-        this.autoRender = this.autoRender || false;
+        this.method = this.method || "replace";
         this.stylesheets = this.stylesheets || null;
         this.scripts = this.scripts || null;
+        this.autoRender = this.autoRender || false;
+        this.context = this.context || {};
+        this.html = this.html ?? "";
+        this.engine = this.engine ?? "mustache";
 
+        // Functional Properties
+        this.rendered = this.rendered ?? "";
+        this.renderCount = 0;
         this.engines = {
             default: () => {
                 return basicRender(this.html, this.context);
             },
             mustache: () => {
                 return Mustache.render(this.html, this.context);
+                //let {prep_func: ()=>{ return (object, render)=>{//Code Here}}};
             }
-        };
-
-        //let {prep_func: ()=>{ return (object, render)=>{//Code Here}}};
+        };       
     }
 
     get targetElement() {
@@ -235,7 +240,7 @@ export class Template {
 
                 target.classList.remove(`render-${pre}`);
                 target.classList.add(`render-${cur}`);
-                
+
                 let child = target.querySelector(`.render-${pre}`);
                 if (child instanceof Node) {
 
