@@ -29,25 +29,35 @@ export const app = {
     handleError: handleError,
     addressBar: new AddressBar(),
     setup: (() => {
-        window.isModule = true;
-        /**
-        * Here we add event listeners and setup the app. 
-        */
-        document.body.addEventListener("keyup", (e) => {
-        
-            events.keyup[e.target.dataset.keyup]?.(e.target, e);
-        });
+        try {
+            window.isModule = true;
+            /**
+            * Here we add event listeners and setup the app. 
+            */
+            document.body.addEventListener("keyup", (e) => {
+                events.keyup[e.target.dataset.keyup]?.(e.target, e);
+                events.keyup[e.target.code]?.(e.target, e);
+            });
 
-        document.body.addEventListener("change", (e) => {
+            document.body.addEventListener("keydown", (e) => {
 
-            events.change[e.target.dataset.change]?.(e.target, e);
-        });
+                events.keydown[e.target.dataset.keydown]?.(e.target, e);
+                events.keydown[e.target.code]?.(e.target, e);
+            });
 
-        document.body.addEventListener("click", (e) => {
+            document.body.addEventListener("change", (e) => {
 
-            events.click[e.target.dataset.click]?.(e.target, e);
-        });
-        return true;
+                events.change[e.target.dataset.change]?.(e.target, e);
+            });
+
+            document.body.addEventListener("click", (e) => {
+
+                events.click[e.target.dataset.click]?.(e.target, e);
+            });
+            return true;
+        } catch (error) {
+            return error;
+        }
     })()
 
 

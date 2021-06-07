@@ -7,7 +7,7 @@
 import { app } from './scripts/app.js';
 
 // Here's one (bad) way you could handle errors beyond just logging them. 
-document.addEventListener("Error", (event)=>{
+document.addEventListener("Error", (event) => {
 
     app.modal.warn(`An Error Occured!<br>Error: ${event.detail.message} `);
 
@@ -16,7 +16,7 @@ document.addEventListener("Error", (event)=>{
 
 document.body.onload = () => {
 
-   app.ajax.getScript("./scripts/libs/jquery-3.6.0.js").then((res) => {
+    app.ajax.getScript("./scripts/libs/jquery-3.6.0.js").then((res) => {
 
         if (res) {
             $("#test").html("WINNING!");
@@ -35,6 +35,7 @@ document.body.onload = () => {
             dataUrl: "api/test.json",
             htmlUrl: "api/partial.html",
             target: "#TestArea",
+            method: "appendOnce",
             stylesheets: ["css/test.css", "css/index.css"],
             scripts: "scripts/libs/jquery-3.6.0.min.js"
         })
@@ -59,7 +60,7 @@ document.body.onload = () => {
     });
 
     // Let's get some data asynchronously and log it
-   app.ajax.getJSON("api/test.json")
+    app.ajax.getJSON("api/test.json")
         .then((result) => {
             console.log(`We got this text: ${result.someText}`);
         }).catch((error) => {
@@ -81,7 +82,7 @@ document.body.onload = () => {
         }
     }
 
-     // Let's stick this in the click events so it only happens when you click a button. 
+    // Let's stick this in the click events so it only happens when you click a button. 
     // Normally I wouldn't set events here, just define them in custom_events.js
     app.events.click.hello = sayHello;
 

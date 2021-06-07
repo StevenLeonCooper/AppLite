@@ -14,10 +14,11 @@ export class Template {
         if (typeof settings === "object") {
             Object.assign(this, settings);
         }
-
+        this.renderCount = 0;
         this.context = this.context || {};
+        this.method = this.method || "replace";
         this.html = this.html ?? "";
-        this.engine = this.engine ?? "default";
+        this.engine = this.engine ?? "mustache";
         this.target = this.target ?? "#NoTargetSelected";
         this.rendered = this.rendered ?? "";
         this.dataUrl = this.dataUrl ?? null;
@@ -90,7 +91,7 @@ export class Template {
 
         if (url === null) { return null; }
 
-        if(typeof url === "object"){
+        if (typeof url === "object") {
             self.context = url;
             return self;
         }
@@ -118,9 +119,9 @@ export class Template {
 
         const self = this;
 
-        if (typeof url !== "string" && !Array.isArray(url)) { 
+        if (typeof url !== "string" && !Array.isArray(url)) {
             handleError("importElement, Invalid url");
-            return self; 
+            return self;
         }
 
         url = Array.isArray(url) ? url : [url];
@@ -140,7 +141,7 @@ export class Template {
 
                 elements.push(container);
             }
-            self[property] = elements; 
+            self[property] = elements;
 
             return self;
         }
@@ -206,6 +207,63 @@ export class Template {
         return this;
     }
 
+    insert(target, rendered) {
+        const self = this;
+
+        let type = self.method;
+
+        function setupInsert(rendered, onceOnly) {
+            let wrapper = document.createElement("div");
+            let newId = `${target.id}_${Date.now()}`
+            if (onceOnly === true) {
+                self.target = `#${newId}`;
+                self.method = "replace";
+            }
+            wrapper.id = newId;
+            wrapper.classList.add("dynamic-child")
+            wrapper.classList.add(`${target.id}-child`);
+            wrapper.classList.add(`render-${self.renderCount}`)
+            wrapper.innerHTML = rendered;
+            return wrapper;
+        }
+
+        const methods = {
+            replace: (rendered) => {
+                target.innerHTML = rendered;
+                let pre = self.renderCount - 1;
+                let cur = self.renderCount;
+
+                target.classList.remove(`render-${pre}`);
+                target.classList.add(`render-${cur}`);
+                
+                let child = target.querySelector(`.render-${pre}`);
+                if (child instanceof Node) {
+
+                    child.classList.remove(`render-${pre}`);
+                    child.classList.add(`render-${cur}`);
+                }
+            },
+            append: (rendered) => {
+                let wrapper = setupInsert(rendered);
+                target.append(wrapper);
+            },
+            prepend: (rendered) => {
+                let wrapper = setupInsert(rendered);
+                target.prepend(wrapper);
+            },
+            appendOnce: (rendered) => {
+                let wrapper = setupInsert(rendered, true);
+                target.prepend(wrapper);
+            },
+            prependOnce: (rendered) => {
+                let wrapper = setupInsert(rendered, true);
+                target.prepend(wrapper);
+            }
+        };
+
+        methods[type]?.(rendered);
+    }
+
     /**
      * - Renders the current template to the innerHTML of the element
      * matching the provided selector. 
@@ -225,8 +283,14 @@ export class Template {
         this.rendered = rendered;
 
         if (target instanceof Node) {
-            target.innerHTML = rendered;
+
+            this.insert(target, rendered);
         }
+
+        this.renderCount++;
+
+        console.log(`${target.id} Count: ${this.renderCount}`);
+
         return this;
     }
 
