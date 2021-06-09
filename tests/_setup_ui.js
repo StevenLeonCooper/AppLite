@@ -8,7 +8,7 @@ let props = {
     color: ["red"]
 };
 
-let animation = new Transition("#AppWrapper", props, ".5");
+let animation = new Transition("p", props, ".5");
 
 window._debug = animation;
 

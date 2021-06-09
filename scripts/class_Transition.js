@@ -1,8 +1,8 @@
 class PropList {
-    constructor(properties, element) {
+    constructor(styleProps, element) {
         this.states = 1;
         this.currentState = 1;
-        this.properties = properties;
+        this.properties = JSON.parse(JSON.stringify(styleProps)); // Deep Clone
         this.element = element;
 
         const transform = {
@@ -22,7 +22,7 @@ class PropList {
                 return val;
             }
         };
-        // Enure all arrays are the same size. If no values
+        // Ensure all arrays are the same size. If no values
         // were given for some, just repeat the first value. 
         for (const key in this.properties) {
             let item = this.properties[key];
@@ -86,13 +86,13 @@ export class Transition {
     /**
      * 
      * @param {string | Array | Node} element - HTML Node(s) to transition (Selector OK)
-     * @param {Object} properties - CSS properties as {prop: ['in','out']}
+     * @param {Object} styleProperties - CSS properties as {prop: ['in','out']}
      * @param {number} speedIn - transition duration for "in" (and "out")
      * @param {number} speedOut - (optional) transition duraton for "out"
      */
-    constructor(element, properties, speedIn, speedOut) {
+    constructor(element, styleProperties, speedIn, speedOut) {
         this.flip = false;
-        this.props = {};
+        this.props = new WeakMap();
         this.speed = {
             in: speedIn,
             out: speedOut ?? speedIn
@@ -107,8 +107,17 @@ export class Transition {
             this.elements = element;
         }
 
+        this.originalStyleProps = {};
+        Object.assign(this.originalStyleProps, styleProperties); 
+
         this.elements.forEach((el) => {
-            this.props[el] = new PropList(properties, el);
+            let test = styleProperties;
+            let test2 = this.originalStyleProps;
+            
+            debugger;
+
+            let propList = new PropList(styleProperties, el);
+            this.props.set(el, propList);
         });
     }
 
@@ -145,8 +154,8 @@ export class Transition {
             }, { once: true });
 
             setTimeout(() => {
-                for (const key in self.props[el].properties) {
-                    el.style[key] = flip ? self.props[el].in(key, el) : self.props[el].out(key, el);
+                for (const key in self.props.get(el).properties) {
+                    el.style[key] = flip ? self.props.get(el).in(key, el) : self.props.get(el).out(key, el);
                 }
             }, 0);
         });
