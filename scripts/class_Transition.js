@@ -7,9 +7,10 @@ class PropList {
 
         const transform = {
             height: (_val) => {
+                let cur = element.clientHeight + "px";
                 element.style.height = "auto";
                 let calculated = element.clientHeight;
-                element.style.height = `${calculated}px`;
+                element.style.height = cur;
                 return `${calculated}px`;
             },
             width: (_val) => {
@@ -107,7 +108,7 @@ export class Transition {
             this.elements = element;
         }
 
-        
+
         this.elements.forEach((el) => {
             let propList = new PropList(styleProperties, el);
             this.props.set(el, propList);

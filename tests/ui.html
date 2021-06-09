@@ -8,22 +8,47 @@
     <link rel="stylesheet" href="/css/index.css">
     <style>
         /* Special styles that override linked stylesheets. */
-        
+
+        .toggler {
+            cursor: pointer;
+        }
+
+        .toggle-child {
+            overflow: hidden;
+        }
+
+        .toggle-child:not(.active) {
+            height: 0px;
+        }
+
+        #AppWrapper{
+            max-width: 500px;
+        }
     </style>
 </head>
 
 <body id="PageBody">
     <div id="AppWrapper">
         <h1>AppLite UI</h1>
-        <p class="small">
-            Send forms via AJAX
+        <p>
+            This is a paragraph of text.
         </p>
 
-        <p class="medium">
-            This is a test. <br>
-            This is a test. <br>
-        </p>
-        
+        <h2 class="toggler">Heading Here</h2>
+        <div class="toggle-child">
+            This is a paragraph of text.This is a paragraph of text.This is a paragraph of text.This is a paragraph of
+            text.
+            This is a paragraph of text.This is a paragraph of text.This is a paragraph of text.This is a paragraph of
+            text.
+            This is a paragraph of text.This is a paragraph of text.This is a paragraph of text.This is a paragraph of
+            text.
+            This is a paragraph of text.This is a paragraph of text.This is a paragraph of text.This is a paragraph of
+            text.
+            This is a paragraph of text.This is a paragraph of text.This is a paragraph of text.This is a paragraph of
+            text.
+        </div>
+
+
     </div>
     <script type="module" src="_setup_ui.js"></script>
 </body>
