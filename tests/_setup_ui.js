@@ -1,16 +1,14 @@
 import { Transition } from "../scripts/class_Transition.js";
-import { handleError } from "../scripts/core_errors.js";
 
 let props = {
     opacity: [1, 0.5],
-    backgroundColor: ["gray", "red"],
+    backgroundColor: ["", "yellow"],
     height: ["*", "300px"],
-    color: ["red"]
+    color: ["black", "red"],
+    width: ["*","350px"]
 };
 
 let animation = new Transition("p", props, ".5");
-
-window._debug = animation;
 
 document.body.addEventListener("click", () => {
 

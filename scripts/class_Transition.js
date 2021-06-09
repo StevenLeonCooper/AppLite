@@ -107,15 +107,8 @@ export class Transition {
             this.elements = element;
         }
 
-        this.originalStyleProps = {};
-        Object.assign(this.originalStyleProps, styleProperties); 
-
+        
         this.elements.forEach((el) => {
-            let test = styleProperties;
-            let test2 = this.originalStyleProps;
-            
-            debugger;
-
             let propList = new PropList(styleProperties, el);
             this.props.set(el, propList);
         });
