@@ -1,15 +1,19 @@
-import { Transition } from "../scripts/helper_ui.js";
+import { Transition } from "../scripts/class_Transition.js";
+import { handleError } from "../scripts/core_errors.js";
 
-let props = { 
+let props = {
     opacity: [1, 0.5],
-    backgroundColor: ["gray","red"],
-    height: ["*","300px"]
+    backgroundColor: ["gray", "red"],
+    height: ["*", "300px"],
+    color: ["red"]
 };
 
 let animation = new Transition("#AppWrapper", props, ".5");
 
-document.body.addEventListener("click", ()=>{
+window._debug = animation;
 
-    animation.toggle();
+document.body.addEventListener("click", () => {
+
+    animation.toggle({ classes: "active", data: { foo: "bar" } });
 
 });
