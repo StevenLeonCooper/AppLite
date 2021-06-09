@@ -3,7 +3,10 @@ export const events = {};
 events.click = {};
 events.change = {};
 events.keyup = {};
+events.keydown = {};
 events.actions = {};
+events.mouseenter = {};
+events.mouseleave = {};
 
 /**
  * Converts input into an array of elements. 

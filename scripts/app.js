@@ -34,15 +34,15 @@ export const app = {
             /**
             * Here we add event listeners and setup the app. 
             */
-            document.body.addEventListener("keyup", (e) => {
+            document.addEventListener("keyup", (e) => {
                 events.keyup[e.target.dataset.keyup]?.(e.target, e);
-                events.keyup[e.target.code]?.(e.target, e);
+                events.keyup[e.code]?.(e.target, e);
             });
 
-            document.body.addEventListener("keydown", (e) => {
+            document.addEventListener("keydown", (e) => {
 
                 events.keydown[e.target.dataset.keydown]?.(e.target, e);
-                events.keydown[e.target.code]?.(e.target, e);
+                events.keydown[e.code]?.(e.target, e);
             });
 
             document.body.addEventListener("change", (e) => {

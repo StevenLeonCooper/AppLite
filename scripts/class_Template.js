@@ -41,7 +41,7 @@ export class Template {
                 return Mustache.render(this.html, this.context);
                 //let {prep_func: ()=>{ return (object, render)=>{//Code Here}}};
             }
-        };       
+        };
     }
 
     get targetElement() {
@@ -123,6 +123,10 @@ export class Template {
     async importElement(url, type, parent, property) {
 
         const self = this;
+
+        if (url == null) {
+            return self;
+        }
 
         if (typeof url !== "string" && !Array.isArray(url)) {
             handleError("importElement, Invalid url");
