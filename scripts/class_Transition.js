@@ -14,9 +14,10 @@ class PropList {
                 return `${calculated}px`;
             },
             width: (_val) => {
+                let cur = element.clientWidth + "px";
                 element.style.width = "auto";
                 let calculated = element.clientWidth;
-                element.style.width = `${calculated}px`;
+                element.style.width = cur;
                 return `${calculated}px`;
             },
             default: (val) => {
@@ -39,6 +40,8 @@ class PropList {
                     }
                 }
                 item.forEach((val, index) => {
+                    // Animating to/from "auto" is not recommended so we'll do
+                    // something special to calculate certain values. 
                     if (val === "*") {
                         item[index] = (transform[key] ?? transform.default)(val);
                     }
