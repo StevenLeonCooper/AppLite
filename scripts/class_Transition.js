@@ -86,28 +86,47 @@ class PropList {
 export class Transition {
     /**
      * 
-     * @param {string | Array | Node} element - HTML Node(s) to transition (Selector OK)
+     * @param {string | Array | Node | Object} target - HTML Node(s) to transition (Selector OK)
      * @param {Object} styleProperties - CSS properties as {prop: ['in','out']}
      * @param {number} speedIn - transition duration for "in" (and "out")
      * @param {number} speedOut - (optional) transition duraton for "out"
      */
-    constructor(element, styleProperties, speedIn, speedOut) {
+    constructor(element, styleProperties, speedIn, speedOut, easing) {
+
+        const settings = {};
+        let  target = null;
+
+        if(arguments.length == 1 && typeof target == "object"){
+            let importedSettings = element;
+            Object.assign(settings, importedSettings);
+        }
+
+        target = settings.target || element;
+        styleProperties = settings.css || styleProperties;
+        speedIn = settings.speedIn || speedIn;
+        speedOut = settings.speedOut || speedOut || speedIn;
+        easing = settings.easing || easing;
+
         this.flip = false;
+
         this.props = new WeakMap();
+
         this.speed = {
             in: speedIn,
-            out: speedOut ?? speedIn
+            out: speedOut
         };
-        this.elements = [element];
 
-        if (typeof element === "string") {
-            this.elements = Array.from(document.querySelectorAll(element));
+        this.easing = easing ?? "ease";
+
+        this.elements = [target];
+
+        if (typeof target === "string") {
+            this.elements = Array.from(document.querySelectorAll(target));
         }
 
-        if (Array.isArray(element)) {
-            this.elements = element;
+        if (Array.isArray(target)) {
+            this.elements = target;
         }
-
 
         this.elements.forEach((el) => {
             let propList = new PropList(styleProperties, el);
@@ -137,7 +156,9 @@ export class Transition {
 
             el.classList.add("in-transit");
 
-            el.style.transition = el.style.transition || `all ${self.speed.in}s ease`
+            let speed = flip ? self.speed.out : self.speed.in;
+
+            el.style.transition = `all ${speed} ${self.easing}`
 
             el.addEventListener("transitionend", (e) => {
 
