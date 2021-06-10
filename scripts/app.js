@@ -12,6 +12,10 @@ import { modal } from './helper_modal.js';
 
 import { template } from './helper_template.js';
 
+import {dom} from './helper_dom.js';
+
+import {Transition} from './class_Transition.js';
+
 // Some may prefer to just use this class as-is without the helper. 
 import { Template } from './class_Template.js';
 
@@ -21,11 +25,13 @@ import { Template } from './class_Template.js';
 export const app = {
     Template: Template,
     Benchmark: Benchmark,
+    Transition: Transition,
     template: template,
     events: events,
     bindings: bindings,
     modal: modal,
     ajax: ajax,
+    dom: dom,
     handleError: handleError,
     addressBar: new AddressBar(),
     setup: (() => {

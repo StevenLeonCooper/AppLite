@@ -2,7 +2,6 @@ import { ajax } from './helper_ajax.js';
 
 import Mustache from './libs/mustache.js';
 
-import { basicRender } from './helper_template.js';
 import { handleError } from './core_errors.js';
 
 /**
@@ -35,7 +34,7 @@ export class Template {
         this.renderCount = 0;
         this.engines = {
             default: () => {
-                return basicRender(this.html, this.context);
+                return this.basicRender(this.html, this.context);
             },
             mustache: () => {
                 return Mustache.render(this.html, this.context);
@@ -43,6 +42,20 @@ export class Template {
             }
         };
     }
+
+    basicRender(html, context) {
+        let workshop = document.createElement("div");
+        workshop.innerHTML = html;
+        workshop.querySelectorAll("[data-context]").forEach((el) => {
+            let binding = el.dataset.context?.split(".");
+            let cache = context;
+            binding.forEach((key) => {
+                cache = cache[key] ?? {};
+            });
+            interpretData(el, cache);
+        });
+        return workshop.innerHTML;
+    };
 
     get targetElement() {
         return document.querySelector(this.target);

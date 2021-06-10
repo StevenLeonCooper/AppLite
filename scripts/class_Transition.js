@@ -7,17 +7,17 @@ class PropList {
 
         const transform = {
             height: (_val) => {
-                let cur = element.clientHeight + "px";
-                element.style.height = "auto";
-                let calculated = element.clientHeight;
-                element.style.height = cur;
+                let cur = this.target.clientHeight + "px";
+                this.target.style.height = "auto";
+                let calculated = this.target.clientHeight;
+                this.target.style.height = cur;
                 return `${calculated}px`;
             },
             width: (_val) => {
-                let cur = element.clientWidth + "px";
-                element.style.width = "auto";
-                let calculated = element.clientWidth;
-                element.style.width = cur;
+                let cur = this.target.clientWidth + "px";
+                this.target.style.width = "auto";
+                let calculated = this.target.clientWidth;
+                this.target.style.width = cur;
                 return `${calculated}px`;
             },
             default: (val) => {
@@ -48,6 +48,12 @@ class PropList {
                 });
             }
         }
+    }
+
+    get target() {
+        if (this.element instanceof Node) return this.element;
+        if (typeof this.element === "string") return document.querySelector(this.element);
+        return false;
     }
 
     _get(key, index) {
@@ -97,9 +103,9 @@ export class Transition {
     constructor(element, styleProperties, speedIn, speedOut, easing) {
 
         const settings = {};
-        let  target = null;
+        let target = null;
 
-        if(arguments.length == 1 && typeof target == "object"){
+        if (arguments.length == 1 && typeof target == "object") {
             let importedSettings = element;
             Object.assign(settings, importedSettings);
         }
@@ -121,15 +127,7 @@ export class Transition {
 
         this.easing = easing ?? "ease";
 
-        this.elements = [target];
-
-        if (typeof target === "string") {
-            this.elements = Array.from(document.querySelectorAll(target));
-        }
-
-        if (Array.isArray(target)) {
-            this.elements = target;
-        }
+        this.target = target;
 
         this.elements.forEach((el) => {
             let propList = new PropList(styleProperties, el);
@@ -137,6 +135,27 @@ export class Transition {
         });
     }
 
+    get elements() {
+        if (this.target instanceof NodeList) {
+            return Array.from(this.target);
+        }
+
+        if (this.target instanceof Node) {
+            return [this.target];
+        }
+
+        if (typeof this.target === "string") {
+            return Array.from(document.querySelectorAll(this.target));
+        }
+
+    }
+
+    /**
+     * Private: Sets/Removes extra data/classes if they were specified via toggleData. 
+     * @param {*} element 
+     * @param {*} remove 
+     * @returns 
+     */
     _applyData(element, remove) {
         let data = this.toggleData || null;
         if (data === null) return false;
@@ -153,6 +172,10 @@ export class Transition {
         }
     }
 
+    /**
+     * - Executes the transition. 
+     * @param {boolean} flip - Choose whether to go from Start to End (default) or End to Start (flipped)
+     */
     go(flip) {
         let self = this;
         this.elements.forEach((el) => {
@@ -187,6 +210,27 @@ export class Transition {
         this.toggleData = data;
         this.go(this.flip);
         this.flip = !this.flip;
+    }
+
+    /**
+     * This outputs an example settings option, an easier way to use this class for complex transitions. 
+     */
+    get __settingsDemo() {
+        return {
+            target: "This can be a query selector, a NodeList or a single Node.",
+            easing: "Any of the default CSS speed surve options like ease, ease-in or ease-out",
+            speedIn: "The speed value for the first transition (in).",
+            speedOut: "Optional: The speed value for the optional back (out) transition.",
+            css: {
+                propertyName: ["Starting Value (in)", "Ending value (out)"],
+                propertyName2: ["Ending value only"]
+            },
+            toggleData: {
+                _info: "This optional parameter adds/removes data/classes when transitioning.",
+                data: { key: "value", pairs: "go here" },
+                classes: "space separated class names"
+            }
+        };
     }
 
 }
