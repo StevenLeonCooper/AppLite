@@ -7,17 +7,23 @@ class PropList {
 
         const transform = {
             height: (_val) => {
+                let currentDisplay = this.target.style.display;
+                this.target.style.removeProperty("display");
                 let cur = this.target.clientHeight + "px";
                 this.target.style.height = "auto";
                 let calculated = this.target.clientHeight;
                 this.target.style.height = cur;
+                this.target.style.display = currentDisplay;
                 return `${calculated}px`;
             },
             width: (_val) => {
+                let currentDisplay = this.target.style.display;
+                this.target.style.removeProperty("display");
                 let cur = this.target.clientWidth + "px";
                 this.target.style.width = "auto";
                 let calculated = this.target.clientWidth;
                 this.target.style.width = cur;
+                this.target.style.display = currentDisplay;
                 return `${calculated}px`;
             },
             default: (val) => {

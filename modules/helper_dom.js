@@ -1,8 +1,15 @@
 export const dom = {};
 
-dom.findSibling = (element, selector) => {
+dom.findSibling = (element, selector, direction) => {
 
-    let next = element.nextElementSibling || false;
+    direction = direction || "down";
+
+    let methods = {
+        up: "previous",
+        down: "next"
+    };
+
+    let next = element[`${methods[direction]}ElementSibling`] || false;
 
     if (next === false) return null;
 
@@ -10,3 +17,4 @@ dom.findSibling = (element, selector) => {
 
     return findSibling(next, selector);
 };
+
