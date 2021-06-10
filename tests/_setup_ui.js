@@ -1,8 +1,8 @@
-import { Transition } from "../scripts/class_Transition.js";
+import { Transition } from "../modules/class_Transition.js";
 
-import { dom } from "../scripts/helper_dom.js";
+import { dom } from "../modules/helper_dom.js";
 
-import { events } from "../scripts/core_events.js";
+import { events } from "../modules/core_events.js";
 
 
 events.when(".toggler").clicked((e) => {

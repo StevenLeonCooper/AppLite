@@ -4,7 +4,7 @@
 //     getHtmlPromise, getJsonPromise, postDataPromise
 // } from './scripts/app.js';
 
-import { app } from './scripts/app.js';
+import { app } from './modules/app.js';
 
 // Here's one (bad) way you could handle errors beyond just logging them. 
 document.addEventListener("Error", (event) => {
@@ -16,7 +16,7 @@ document.addEventListener("Error", (event) => {
 
 document.body.onload = () => {
 
-    app.ajax.getScript("./scripts/libs/jquery-3.6.0.js").then((res) => {
+    app.ajax.getScript("./moodules/libs/jquery-3.6.0.js").then((res) => {
 
         if (res) {
             $("#test").html("WINNING!");
@@ -37,7 +37,7 @@ document.body.onload = () => {
             target: "#TestArea",
             method: "appendOnce",
             stylesheets: ["css/test.css", "css/index.css"],
-            scripts: "scripts/libs/jquery-3.6.0.min.js"
+            scripts: "modules/libs/jquery-3.6.0.min.js"
         })
         .importPackage()
         .then((res) => {
