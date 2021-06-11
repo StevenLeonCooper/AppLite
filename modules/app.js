@@ -34,6 +34,7 @@ export const app = {
     dom: dom,
     handleError: handleError,
     addressBar: new AddressBar(),
+    _screenSize: dom.screenSize(),
     setup: (() => {
         try {
             window.isModule = true;
@@ -59,6 +60,10 @@ export const app = {
             document.body.addEventListener("click", (e) => {
 
                 events.click[e.target.dataset.click]?.(e.target, e);
+            });
+
+            window.addEventListener("resize", () => {
+                app._screenSize = app.dom.screenSize();
             });
             return true;
         } catch (error) {
