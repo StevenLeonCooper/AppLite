@@ -3,7 +3,7 @@
 /**
  * Class representing a performance benchmark.
  */
-export class Benchmark {
+ export class Benchmark {
     constructor(name) {
         this.name = name;
         this.start = performance.now();
@@ -70,8 +70,15 @@ export class AddressBar {
         this.update(url, state);
     }
 
-    navigate(url) {
-        window.location.href = url;
+    navigate(url, newWindow) {
+        if (newWindow === true) {
+            let vLink = document.createElement("a");
+            vLink.href = url;
+            vLink.target = "_blank";
+            vLink.click();
+        } else {
+            window.location.href = url;
+        }
     }
 
     redirect(url) {
