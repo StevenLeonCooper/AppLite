@@ -62,8 +62,9 @@ export const app = {
                 events.click[e.target.dataset.click]?.(e.target, e);
             });
 
-            window.addEventListener("resize", () => {
+            window.addEventListener("resize", (e) => {
                 app._screenSize = app.dom.screenSize();
+                events.trigger("window-resized", app._screenSize, document.body);
             });
             return true;
         } catch (error) {

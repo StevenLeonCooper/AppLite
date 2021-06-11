@@ -66,7 +66,7 @@ const setupListener = (type, selector, callback, once) => {
 
     document.body.addEventListener(type, (e) => {
         if (!e.target.matches(selector)) return false;
-        if(once.once){
+        if(once?.once){
             let flag = once.flag ?? "once";
             if(e.target.dataset[flag]) return false;
             e.target.dataset[flag] = true;
