@@ -1,4 +1,4 @@
-import { checkHeadings } from "../scripts/helper_wcag.js";
+import { checkHeadings } from "../modules/helper_wcag.js";
 
 document.addEventListener("click", ()=>{
 
