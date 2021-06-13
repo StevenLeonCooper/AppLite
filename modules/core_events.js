@@ -3,7 +3,10 @@ export const events = {};
 events.click = {};
 events.change = {};
 events.keyup = {};
+events.keydown = {};
 events.actions = {};
+events.mouseenter = {};
+events.mouseleave = {};
 
 /**
  * Converts input into an array of elements. 
@@ -11,8 +14,7 @@ events.actions = {};
  * @returns 
  */
 const findTargets = (input) => {
-    if(!input || input === null)
-    {
+    if (!input || input === null) {
         return ["body"];
     }
     let output = [];
@@ -55,4 +57,40 @@ events.trigger = (name, data, input) => {
         element.dispatchEvent?.(event, eventData);
     });
 };
+
+// Our unique implementation of "once" is different than the standard version. 
+// We don't actually remove the eventListener, we just stop it from working on this
+// particular element after the first run. This lets us use the document body as a 
+// delegate so we can do one-time events on dynamically-generated elements. 
+const setupListener = (type, selector, callback, once) => {
+
+    document.body.addEventListener(type, (e) => {
+        if (!e.target.matches(selector)) return false;
+        if(once?.once){
+            let flag = once.flag ?? "once";
+            if(e.target.dataset[flag]) return false;
+            e.target.dataset[flag] = true;
+        }
+        callback.bind(this)(e);
+    });
+};
+
+events.when = (selector) => {
+    return {
+        clicked: (callback, once) => {
+            setupListener("click", selector, callback, once);
+        },
+        mouseenter: (callback, once) => {
+            setupListener("mouseenter", selector, callback, once);
+        },
+        mouseleave: (callback, once) => {
+            setupListener("mouseleave", selector, callback, once);
+        },
+        focus: (callback, once) => {
+            setupListener("focus", selector, callback, once);
+        }
+    };
+};
+
+
 

@@ -1,3 +1,3 @@
-import { AjaxForm } from "../scripts/helper_ajaxform.js";
+import { AjaxForm } from "../modules/helper_ajaxform.js";
 
 AjaxForm.setup();

@@ -1,15 +1,21 @@
-import { Transition } from "../scripts/helper_ui.js";
+import { Transition } from "../modules/class_Transition.js";
 
-let props = { 
-    opacity: [1, 0.5],
-    backgroundColor: ["gray","red"],
-    height: ["*","300px"]
-};
+import { dom } from "../modules/helper_dom.js";
 
-let animation = new Transition("#AppWrapper", props, ".5");
+import { events } from "../modules/core_events.js";
 
-document.body.addEventListener("click", ()=>{
 
-    animation.toggle();
-
-});
+events.when(".toggler").clicked((e) => {
+    let toggler = e.target;
+    let toggleChild = dom.findSibling(toggler, ".toggle-child");
+    let expand = new Transition({
+        target: toggleChild,
+        speedIn: ".6s",
+        speedOut: ".2s",
+        css: {
+            height: ["0px", "*"],
+        }
+    });
+    toggler.addEventListener("click", expand.toggle.bind(expand));
+    toggler.click();
+}, { once: true });
