@@ -44,6 +44,12 @@ export class Template {
     }
 
     basicRender(html, context) {
+        const interpretData = (element, data) => {
+            // This is where you would customize instead of assigning a string to textContent. 
+            let rendered = `${data}`;
+            element.textContent = rendered;
+        };
+
         let workshop = document.createElement("div");
         workshop.innerHTML = html;
         workshop.querySelectorAll("[data-context]").forEach((el) => {
@@ -311,7 +317,7 @@ export class Template {
 
         this.renderCount++;
 
-        console.log(`${target.id} Count: ${this.renderCount}`);
+        // console.log(`${target?.id} Count: ${this.renderCount}`);
 
         return this;
     }

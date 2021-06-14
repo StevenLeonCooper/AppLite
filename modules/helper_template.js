@@ -11,8 +11,3 @@ template.new = (settings) => {
     return new Template(settings);
 }
 
-const interpretData = (element, data) => {
-    // This is where you would customize instead of assigning a string to textContent. 
-    let rendered = `${data}`;
-    element.textContent = rendered;
-};
