@@ -95,7 +95,7 @@ export class Request {
     _encodePostData(obj) {
         return Object.keys(obj).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(obj[k])).join('&')
     };
-    
+
     /**
      * WARNING: This function is "private" & may return unexpected results. 
      * This function formates the headers and/or data for POST/GET requests. 
@@ -124,15 +124,15 @@ export class Request {
 
             Request._prepHeaders.bind(Request)();
 
-            Request.xhr.onload = function () {
+            Request.xhr.onload = () => {
                 if (this.status >= 200 && this.status < 400) {
                     var data = Request._processReturn(this.response);
                     resolve(data);
                 }
                 reject("Moderate Error");
             };
-            Request.xhr.onerror = function () {
-                reject("Serious Error");
+            Request.xhr.onerror = (event) => {
+                reject(event);
             };
             // INITIATE AJAX REQUEST
             Request.xhr.send(Request.data);
