@@ -112,16 +112,22 @@ export class Request {
         prepMethods[this.requestType]?.(this);
     }
 
-    sendJSONP() {
+    sendJSONP(customCallbackQuery) {
         const Request = this;
+
         return new Promise((resolve, reject) => {
             try {
                 Request._prepHeaders.bind(Request)();
                 let callbackName = `callback_${performance.now().toString().replace(".", "")}`;
                 let script = document.createElement("script");
+                let ccq = customCallbackQuery ?? "callback";
                 let char = Request.url.includes("?") ? "&" : "?";
-                script.src = `${Request.url}${char}callback=${callbackName}`;
+                script.src = `${Request.url}${char}${ccq}=${callbackName}`;
                 window[callbackName] = (data) => {
+                    let replacer = (key, value) => {
+                        return typeof value === "function" ? value.toString() : value;
+                    }
+                    data = JSON.parse(JSON.stringify(data, replacer));
                     resolve(data);
                 };
                 document.head.appendChild(script);

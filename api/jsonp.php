@@ -16,7 +16,10 @@ window.<?php echo($callback)?>({
      "gaming",
      "programming",
      "music"   
-    ]
+    ],
+    skill: (input) => {
+        console.log(`You gave me ${input}!`);
+    }
 });
 
 console.log("JSONP Callback Script");

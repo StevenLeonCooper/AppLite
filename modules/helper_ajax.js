@@ -30,13 +30,12 @@ ajax.getAny = (url, data) => {
  */
 ajax.getJSON = (url, data) => {
     let request = new GET("JSON").from(url).using(data);
-
     return request.send();
 };
 
-ajax.getJSONP = (url, data) =>{
+ajax.getJSONP = (url, data, customCallbackQuery) =>{
     let request = new GET("JSONP").from(url).using(data);
-    return request.sendJSONP();
+    return request.sendJSONP(customCallbackQuery);
 };
 
 ajax.getScript = async (url, parent) => {
