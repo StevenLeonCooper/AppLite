@@ -16,7 +16,19 @@ document.addEventListener("Error", (event) => {
 
 document.body.onload = () => {
 
-    app.ajax.getScript("./moodules/libs/jquery-3.6.0.js").then((res) => {
+    debugger;
+
+    app.ajax.getJSONP("/api/jsonp.php").then((data) => {
+
+        window._jsonp = data;
+        console.log("jsonp good");
+
+    }).catch((error) => {
+        window._jsonp = error;
+        console.log("jsonp bad");
+    });
+
+    app.ajax.getScript("./modules/libs/jquery-3.6.0.js").then((res) => {
 
         if (res) {
             $("#test").html("WINNING!");

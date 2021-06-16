@@ -34,6 +34,11 @@ ajax.getJSON = (url, data) => {
     return request.send();
 };
 
+ajax.getJSONP = (url, data) =>{
+    let request = new GET("JSONP").from(url).using(data);
+    return request.sendJSONP();
+};
+
 ajax.getScript = async (url, parent) => {
     try {
         parent = parent ?? document.head;

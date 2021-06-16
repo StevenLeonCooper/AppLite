@@ -83,13 +83,11 @@ export class Request {
      * @returns 
      */
     _processReturn(data) {
-        if (this.returnType == "JSON") {
-            return JSON.parse(data);
-        }
-
-        if (this.returnType == "HTML") {
-            return data;
-        }
+        const returnMethods = {
+            JSON: data => JSON.parse(data),
+            HTML: data => data
+        };
+        return returnMethods[this.returnType]?.(data);
     }
 
     _encodePostData(obj) {
@@ -101,14 +99,36 @@ export class Request {
      * This function formates the headers and/or data for POST/GET requests. 
      */
     _prepHeaders() {
-        if (this.requestType === "POST") {
-            this.data = this._encodePostData(this.data);
-            this.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        }
-        if (this.requestType === "GET") {
-            var str = Object.keys(this.data).map(key => `${key}=${this.data[key]}`).join("&");
-            this.url = `${this.url}?${str}`;
-        }
+        const prepMethods = {
+            POST: (request) => {
+                request.data = this._encodePostData(request.data);
+                request.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            },
+            GET: (request) => {
+                let str = Object.keys(request.data).map(key => `${key}=${request.data[key]}`).join("&");
+                request.url = str.length > 0 ? `${request.url}?${str}` : request.url;
+            }
+        };
+        prepMethods[this.requestType]?.(this);
+    }
+
+    sendJSONP() {
+        const Request = this;
+        return new Promise((resolve, reject) => {
+            try {
+                Request._prepHeaders.bind(Request)();
+                let callbackName = `callback_${performance.now().toString().replace(".", "")}`;
+                let script = document.createElement("script");
+                let char = Request.url.includes("?") ? "&" : "?";
+                script.src = `${Request.url}${char}callback=${callbackName}`;
+                window[callbackName] = (data) => {
+                    resolve(data);
+                };
+                document.head.appendChild(script);
+            } catch (error) {
+                reject(error);
+            }
+        });
     }
 
     /**
@@ -117,19 +137,16 @@ export class Request {
      */
     async send() {
         const Request = this;
-
+        const xhr = Request.xhr;
         return new Promise((resolve, reject) => {
-
             Request.xhr.open(Request.requestType, Request.url, true);
-
             Request._prepHeaders.bind(Request)();
-
             Request.xhr.onload = () => {
-                if (this.status >= 200 && this.status < 400) {
-                    var data = Request._processReturn(this.response);
+                if (xhr.status >= 200 && xhr.status < 400) {
+                    var data = Request._processReturn(xhr.response);
                     resolve(data);
                 }
-                reject("Moderate Error");
+                reject(xhr);
             };
             Request.xhr.onerror = (event) => {
                 reject(event);
@@ -139,36 +156,6 @@ export class Request {
         });
     }
 
-    /**
-     * Deprecated - I recommend using the promisified version, send(). 
-     * @returns a reference to the request instance. 
-     */
-    now() {
-        this._prepHeaders();
-
-        const promise = new Promise((resolve, reject) => {
-            const Request = this;
-
-            Request.xhr.open(Request.requestType, Request.url, true);
-
-            Request.xhr.onload = function () {
-                if (this.status >= 200 && this.status < 400) {
-                    var data = Request._processReturn(this.response);
-                    resolve(data);
-                }
-                reject("Moderate Error");
-            };
-            Request.xhr.onerror = function () {
-                reject("Serious Error");
-            };
-            // INITIATE AJAX REQUEST
-            Request.xhr.send(Request.data);
-        })
-            .then(this.thenHandler)
-            .catch(this.catchHandler);
-
-        return this;
-    }
 }
 
 /**
