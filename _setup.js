@@ -15,9 +15,6 @@ document.addEventListener("Error", (event) => {
 
 
 document.body.onload = () => {
-
-    debugger;
-
     app.ajax.getJSONP("/api/jsonp.php").then((data) => {
 
         window._jsonp = data;
