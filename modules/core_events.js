@@ -113,9 +113,10 @@ events.setup = (() => {
         document.body.addEventListener("click", (e) => {
             // If there's no click handler on the target, it may 
             // be on a parent element so we look for them here: 
-            let click = e.target.dataset.click ??
-                e.target.closest("[data-click]")?.dataset.click;
-            events.click[click]?.(e.target, e);
+            let source = e.target;
+            source = source.matches("[data-click]") ? source : source.closest("[data-click]");
+            let click = source?.dataset.click;
+            events.click[click]?.(source, e);
         });
 
         return true;
