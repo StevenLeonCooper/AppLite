@@ -3,7 +3,7 @@
  * window.alert() or window.confirm() to provide a better, more consistent
  * browsing experience for users. 
  */
-export class Modal {
+ export class Modal {
     constructor(content) {
 
         let modalWindow = document.createElement("div");
@@ -52,7 +52,15 @@ export class Modal {
 
         this.element.innerHTML = modalContent;
 
-        document.body.appendChild(this.element);
+        //document.body.appendChild(this.element);
+
+        this.element.tabIndex = 1;
+
+        document.body.append(this.element);
+
+        this.element.querySelectorAll("button, a").forEach(el => el.tabIndex = 1);
+
+        this.element.focus();        
     }
 
     /**
