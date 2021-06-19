@@ -38,30 +38,6 @@ export const app = {
     setup: (() => {
         try {
             window.isModule = true;
-            /**
-            * Here we add event listeners and setup the app. 
-            */
-            document.addEventListener("keyup", (e) => {
-                events.keyup[e.target.dataset.keyup]?.(e.target, e);
-                events.keyup[e.code]?.(e.target, e);
-            });
-
-            document.addEventListener("keydown", (e) => {
-
-                events.keydown[e.target.dataset.keydown]?.(e.target, e);
-                events.keydown[e.code]?.(e.target, e);
-            });
-
-            document.body.addEventListener("change", (e) => {
-
-                events.change[e.target.dataset.change]?.(e.target, e);
-            });
-
-            document.body.addEventListener("click", (e) => {
-
-                events.click[e.target.dataset.click]?.(e.target, e);
-            });
-
             window.addEventListener("resize", (e) => {
                 app._screenSize = app.dom.screenSize();
                 events.trigger("window-resized", app._screenSize, document.body);
@@ -74,7 +50,3 @@ export const app = {
 
 
 };
-
-
-
-

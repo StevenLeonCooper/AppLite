@@ -6,12 +6,20 @@
 
 import { app } from './modules/app.js';
 
+window._app = app; // Debug
+
 // Here's one (bad) way you could handle errors beyond just logging them. 
 document.addEventListener("Error", (event) => {
 
     app.modal.warn(`An Error Occured!<br>Error: ${event.detail.message} `);
 
 });
+
+app.events.click.howdy = () => {
+
+    app.modal.alert("Howdy Y'all!");
+
+};
 
 
 document.body.onload = () => {

@@ -66,9 +66,9 @@ const setupListener = (type, selector, callback, once) => {
 
     document.body.addEventListener(type, (e) => {
         if (!e.target.matches(selector)) return false;
-        if(once?.once){
+        if (once?.once) {
             let flag = once.flag ?? "once";
-            if(e.target.dataset[flag]) return false;
+            if (e.target.dataset[flag]) return false;
             e.target.dataset[flag] = true;
         }
         callback.bind(this)(e);
@@ -92,5 +92,34 @@ events.when = (selector) => {
     };
 };
 
+events.setup = (() => {
+    try {
+        document.addEventListener("keyup", (e) => {
+            events.keyup[e.target.dataset.keyup]?.(e.target, e);
+            events.keyup[e.code]?.(e.target, e);
+        });
 
+        document.addEventListener("keydown", (e) => {
 
+            events.keydown[e.target.dataset.keydown]?.(e.target, e);
+            events.keydown[e.code]?.(e.target, e);
+        });
+
+        document.body.addEventListener("change", (e) => {
+
+            events.change[e.target.dataset.change]?.(e.target, e);
+        });
+
+        document.body.addEventListener("click", (e) => {
+            // If there's no click handler on the target, it may 
+            // be on a parent element so we look for them here: 
+            let click = e.target.dataset.click ??
+                e.target.closest("[data-click]")?.dataset.click;
+            events.click[click]?.(e.target, e);
+        });
+
+        return true;
+    } catch (error) {
+        return error;
+    }
+})();

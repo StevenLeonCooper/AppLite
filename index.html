@@ -8,6 +8,17 @@
     <link rel="stylesheet" href="./css/index.css">
     <style>
         /* Special styles that override linked stylesheets. */
+
+        table.events {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        table.events,
+        table.events tr,
+        table.events td {
+            border: 1px solid black;
+        }
     </style>
 </head>
 
@@ -34,8 +45,20 @@
             </p>
         </template>
         <button data-click="hello">Say Hi</button>
-
+        <p>
+        <table class="events">
+            <tr>
+                <th>Heading 1</th>
+                <th>Heading 2</th>
+            </tr>
+            <tr data-click="howdy">
+                <td>Table Data 1</td>
+                <td>Table Data 2</td>
+            </tr>
+        </table>
+        </p>
         <hr>
+
         <h2>Binding Tests</h2>
         <hr>
 
